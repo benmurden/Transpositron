@@ -13,6 +13,12 @@
     vm.classAnimation = '';
     vm.creationDate = 1440125657487;
     vm.showToastr = showToastr;
+    vm.envelope = {
+      a: 0.02,
+      d: 1,
+      s: 0.5,
+      r: 0.25
+    };
 
     activate();
 
