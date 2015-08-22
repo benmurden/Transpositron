@@ -45,37 +45,45 @@
               <div flex="10" layout layout-align="center center">
                 <span class="md-body-1">Attack</span>
               </div>
-              <md-slider flex ng-model="main.envelope.a" min="0" max="2" step="0.01" aria-label="attack" id="attack-slider"></md-slider>
+              <div flex layout layout-align="center center">
+                <md-slider flex ng-model="main.envelope.a" min="0" max="2" step="0.01" aria-label="attack" id="attack-slider"></md-slider>
+              </div>
               <md-input-container flex="10" layout layout-align="center center">
-                <input style="width:80%" type="number" ng-model="main.envelope.a" aria-label="attack" aria-controls="attack-slider">
+                <input class="flex-input" type="number" ng-model="main.envelope.a" aria-label="attack" aria-controls="attack-slider">
               </md-input-container>
             </div>
             <div layout>
               <div flex="10" layout layout-align="center center">
                 <span class="md-body-1">Decay</span>
               </div>
-              <md-slider flex ng-model="main.envelope.d" min="0" max="2" step="0.01" aria-label="decay" id="decay-slider"></md-slider>
-              <div flex="10" layout layout-align="center center">
-                <input type="number" ng-model="main.envelope.d" aria-label="decay" aria-controls="decay-slider">
+              <div flex layout layout-align="center center">
+                <md-slider flex ng-model="main.envelope.d" min="0" max="2" step="0.01" aria-label="decay" id="decay-slider"></md-slider>
               </div>
+              <md-input-container flex="10" layout layout-align="center center">
+                <input class="flex-input" type="number" ng-model="main.envelope.d" aria-label="decay" aria-controls="decay-slider">
+              </md-input-container>
             </div>
             <div layout>
               <div flex="10" layout layout-align="center center">
                 <span class="md-body-1">Sustain</span>
               </div>
-              <md-slider flex ng-model="main.envelope.s" min="0" max="2" step="0.01" aria-label="sustain" id="sustain-slider"></md-slider>
-              <div flex="10" layout layout-align="center center">
-                <input type="number" ng-model="main.envelope.s" aria-label="sustain" aria-controls="sustain-slider">
+              <div flex layout layout-align="center center">
+                <md-slider flex ng-model="main.envelope.s" min="0" max="2" step="0.01" aria-label="sustain" id="sustain-slider"></md-slider>
               </div>
+              <md-input-container flex="10" layout layout-align="center center">
+                <input class="flex-input" type="number" ng-model="main.envelope.s" aria-label="sustain" aria-controls="sustain-slider">
+              </md-input-container>
             </div>
             <div layout>
               <div flex="10" layout layout-align="center center">
                 <span class="md-body-1">Release</span>
               </div>
-              <md-slider flex ng-model="main.envelope.r" min="0" max="2" step="0.01" aria-label="release" id="release-slider"></md-slider>
-              <div flex="10" layout layout-align="center center">
-                <input type="number" ng-model="main.envelope.r" aria-label="release" aria-controls="release-slider">
+              <div flex layout layout-align="center center">
+                <md-slider flex ng-model="main.envelope.r" min="0" max="2" step="0.01" aria-label="release" id="release-slider"></md-slider>
               </div>
+              <md-input-container flex="10" layout layout-align="center center">
+                <input class="flex-input" type="number" ng-model="main.envelope.r" aria-label="release" aria-controls="release-slider">
+              </md-input-container>
             </div>
           </md-card>
         </div>
