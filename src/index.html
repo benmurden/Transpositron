@@ -32,17 +32,54 @@
         </header>
     
         <section class="jumbotron">
-          <h1>'Allo, 'Allo!</h1>
+          <h1>Transpositron</h1>
           <p class="lead">
-            <img src="assets/images/yeoman.png" alt="I'm Yeoman"><br>
-            Always a pleasure scaffolding your apps.
-          </p>
-          <md-button class="md-raised animated infinite" ng-class="main.classAnimation" ng-click="main.showToastr()">Splendid Toastr</md-button>
-          <p>
-            With ♥ thanks to the contributions of<acme-malarkey extra-values="['Yeoman', 'Gulp', 'Angular']" />
+            Transpose your keyboard and easily play any scale!
           </p>
         </section>
     
+        <div layout-align="center">
+          <md-card>
+            <h3>Envelope</h3>
+            <div layout>
+              <div flex="10" layout layout-align="center center">
+                <span class="md-body-1">Attack</span>
+              </div>
+              <md-slider flex ng-model="main.envelope.a" min="0" max="2" step="0.01" aria-label="attack" id="attack-slider"></md-slider>
+              <md-input-container flex="10" layout layout-align="center center">
+                <input style="width:80%" type="number" ng-model="main.envelope.a" aria-label="attack" aria-controls="attack-slider">
+              </md-input-container>
+            </div>
+            <div layout>
+              <div flex="10" layout layout-align="center center">
+                <span class="md-body-1">Decay</span>
+              </div>
+              <md-slider flex ng-model="main.envelope.d" min="0" max="2" step="0.01" aria-label="decay" id="decay-slider"></md-slider>
+              <div flex="10" layout layout-align="center center">
+                <input type="number" ng-model="main.envelope.d" aria-label="decay" aria-controls="decay-slider">
+              </div>
+            </div>
+            <div layout>
+              <div flex="10" layout layout-align="center center">
+                <span class="md-body-1">Sustain</span>
+              </div>
+              <md-slider flex ng-model="main.envelope.s" min="0" max="2" step="0.01" aria-label="sustain" id="sustain-slider"></md-slider>
+              <div flex="10" layout layout-align="center center">
+                <input type="number" ng-model="main.envelope.s" aria-label="sustain" aria-controls="sustain-slider">
+              </div>
+            </div>
+            <div layout>
+              <div flex="10" layout layout-align="center center">
+                <span class="md-body-1">Release</span>
+              </div>
+              <md-slider flex ng-model="main.envelope.r" min="0" max="2" step="0.01" aria-label="release" id="release-slider"></md-slider>
+              <div flex="10" layout layout-align="center center">
+                <input type="number" ng-model="main.envelope.r" aria-label="release" aria-controls="release-slider">
+              </div>
+            </div>
+          </md-card>
+        </div>
+
         <div class="techs" layout-align="center">
           <md-card ng-repeat="awesomeThing in main.awesomeThings | orderBy:'rank'">
             <div class="thumbnail">
