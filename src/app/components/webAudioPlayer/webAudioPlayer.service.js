@@ -62,8 +62,7 @@
       gain.linearRampToValueAtTime(volume * s, time + a + d);
       gain.setValueAtTime(volume * s, time + a + d + duration);
       gain.linearRampToValueAtTime(0, time + a + d + duration + r);
-    },
-
+    };
 
   }
 
