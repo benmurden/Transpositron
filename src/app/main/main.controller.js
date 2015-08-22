@@ -20,6 +20,10 @@
       r: 0.25
     };
 
+    vm.keyDown = function(e) {
+      console.log(e);
+    };
+
     activate();
 
     function activate() {
