@@ -19,7 +19,7 @@
     <!-- endinject -->
     <!-- endbuild -->
   </head>
-  <body ng-controller="MainController as main" ng-keydown="main.keyDown($event)">
+  <body ng-controller="MainController as main" ng-keydown="main.keyDown($event)" ng-keyup="main.keyUp($event)">
     <!--[if lt IE 10]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -34,7 +34,7 @@
         <section class="jumbotron">
           <h1>Transpositron</h1>
           <p class="lead">
-            Transpose your keyboard and easily play any scale!
+            Transpose your keyboard and easily play any scale.
           </p>
         </section>
     
