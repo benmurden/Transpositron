@@ -6,28 +6,39 @@
     .controller('MainController', MainController);
 
   /** @ngInject */
-  function MainController($timeout, $log, webAudioPlayer, webDevTec, toastr) {
+  function MainController($timeout, $log, webAudioPlayer, keypressHelper, webDevTec, toastr) {
     var vm = this;
 
     vm.awesomeThings = [];
     vm.classAnimation = '';
     vm.creationDate = 1440125657487;
     vm.showToastr = showToastr;
-    vm.envelope = {
-      a: 0.02,
-      d: 1,
-      s: 0.5,
-      r: 0.25
-    };
-    vm.keySequence = [90,88,67,86,66,78,77,188,190,65,83,68,70,71,72,74,75,76,186,222];
+    vm.ap = webAudioPlayer;
+    // vm.keySequence = [90,88,67,86,66,78,77,188,190,65,83,68,70,71,72,74,75,76,186,222];
+    vm.keySequence = ['z','x','c','v','b','n','m',',','.','a','s','d','f','g','h','j','k','l',';','\''];
     vm.keysDown = [];
+    vm.scale = '2212221';
+    vm.baseOctave = 2;
+    vm.keyNoteMap = {};
+
+    vm.mapKeysToNotes = function() {
+      var scalePosition = 0;
+
+      vm.keySequence.forEach(function(v, i) {
+        vm.keyNoteMap[v] = webAudioPlayer.noteList[(vm.baseOctave * 12) + scalePosition];
+        scalePosition += parseInt(vm.scale[i % vm.scale.length]);
+      });
+    };
 
     vm.keyDown = function(e) {
-      var index = vm.keysDown.indexOf(e.keyCode);
+      var downIndex = vm.keysDown.indexOf(e.keyCode);
+      var sequenceIndex = vm.keySequence.indexOf(e.keyCode);
 
-      if (index === -1) {
+      if (downIndex === -1 && sequenceIndex !== -1) {
         vm.keysDown.push(e.keyCode);
         $log.log(e.keyCode);
+
+        webAudioPlayer.playNote(vm.keyNoteMap[e.keyCode], 1);
       }
     };
 
@@ -44,9 +55,26 @@
 
     function activate() {
       getWebDevTec();
+      vm.mapKeysToNotes();
       $timeout(function() {
         vm.classAnimation = 'rubberBand';
       }, 4000);
+
+      var combos = [];
+      vm.keySequence.forEach(function(v) {
+        combos.push({
+          keys: v,
+          on_keydown: function(e, count, duplicate) {
+            if (!duplicate) {
+              vm.keyDown(e);
+            }
+          },
+          on_keyup: function(e) {
+            vm.keyUp(e);
+          }
+        });
+      });
+      keypressHelper.listener.register_many(combos);
     }
 
     function showToastr() {
@@ -61,5 +89,36 @@
         awesomeThing.rank = Math.random();
       });
     }
+
+    vm.scales = [
+      {
+        name: 'Major',
+        value: '2212221'
+      },
+      {
+        name: 'Lydian',
+        value: '2221221'
+      },
+      {
+        name: 'Locrian',
+        value: '1221222'
+      },
+      {
+        name: 'Japanese A',
+        value: '14214'
+      },
+      {
+        name: 'Japanese B',
+        value: '23214'
+      },
+      {
+        name: 'Japanese (Ichikosucho)',
+        value: '22111221'
+      },
+      {
+        name: 'Japanese (Taishikicho)',
+        value: '221112111'
+      }
+    ];
   }
 })();
