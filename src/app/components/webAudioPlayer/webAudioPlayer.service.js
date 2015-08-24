@@ -7,7 +7,7 @@
 
   /** @ngInject */
   function webAudioPlayer() {
-    var NOTES = (function () {
+    this.NOTES = (function () {
       var notes = {};
       var toneSymbols = "CcDdEFfGgAaB";
       function noteToFrequency (note) {
@@ -21,19 +21,39 @@
       return notes;
     }());
 
+    this.noteList = (function() {
+      var list = [];
+      var toneSymbols = "CcDdEFfGgAaB";
+
+      for (var octave = 0; octave < 8; ++octave) {
+        for (var t = 0; t < 12; ++t) {
+          list.push(toneSymbols[t]+octave);
+        }
+      }
+      return list;
+    }());
+
+    this.waveform = 'sine';
+    this.envelopeDefs = {
+      a: 0.02,
+      d: 0.6,
+      s: 0.4,
+      r: 0.25
+    };
+
     var audioContext = new window.AudioContext();
+    var compressor = audioContext.createDynamicsCompressor();
 
     this.playNote = function(note, duration, semitone) {
       var osc = audioContext.createOscillator();
-      var freq = NOTES[note];
+      var freq = this.NOTES[note];
       var time = audioContext.currentTime;
-      var a = parseFloat(this.get('attack'));
-      var d = parseFloat(this.get('decay'));
-      var s = parseFloat(this.get('sustain'));
-      var r = parseFloat(this.get('release'));
+      var a = this.envelopeDefs.a;
+      var d = this.envelopeDefs.d;
+      var s = this.envelopeDefs.s;
+      var r = this.envelopeDefs.r;
       var gain = audioContext.createGain();
-      var waveform = this.get('waveform');
-      var compressor = this.get('compressor');
+      var waveform = this.waveform;
       var standardOscillatorTypes = ['sine', 'square', 'sawtooth', 'triangle'];
 
       if (standardOscillatorTypes.indexOf(waveform) !== -1) {
@@ -49,7 +69,7 @@
       this.envelope(gain, time, 1, duration, a, d, s, r);
 
       osc.frequency.value = freq;
-      osc.detune.value = semitone * 100;
+      // osc.detune.value = semitone * 100;
       osc.start(time);
       osc.stop(time + a + d + duration + r);
     };
