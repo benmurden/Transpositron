@@ -13,6 +13,7 @@
     "angular": false,
     "inject": false,
     "module": false,
-    "window": false
+    "window": false,
+    "_": false
   }
 }
