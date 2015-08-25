@@ -6,7 +6,7 @@
     .controller('MainController', MainController);
 
   /** @ngInject */
-  function MainController($timeout, $log, webAudioPlayer, keypressHelper, webDevTec, toastr) {
+  function MainController($timeout, $log, webAudioPlayer, keypressHelper, webDevTec, toastr, _) {
     var vm = this;
 
     vm.awesomeThings = [];
@@ -31,23 +31,24 @@
     };
 
     vm.keyDown = function(e) {
-      var downIndex = vm.keysDown.indexOf(e.keyCode);
-      var sequenceIndex = vm.keySequence.indexOf(e.keyCode);
+      var key = keypressHelper.convert_key_to_readable(e.keyCode);
+      var sequenceIndex = _.indexOf(vm.keySequence, key);
 
-      if (downIndex === -1 && sequenceIndex !== -1) {
-        vm.keysDown.push(e.keyCode);
+      if (sequenceIndex !== -1) {
         $log.log(e.keyCode);
 
-        webAudioPlayer.playNote(vm.keyNoteMap[e.keyCode], 1);
+        webAudioPlayer.startNote(vm.keyNoteMap[key]);
       }
     };
 
     vm.keyUp = function(e) {
-      var index = vm.keysDown.indexOf(e.keyCode);
+      var key = keypressHelper.convert_key_to_readable(e.keyCode);
+      var sequenceIndex = _.indexOf(vm.keySequence, key);
 
-      if (index !== -1) {
-        vm.keysDown.pop(index);
+      if (sequenceIndex !== -1) {
         $log.log('Key up: ' + e.keyCode);
+
+        webAudioPlayer.endNote(vm.keyNoteMap[key]);
       }
     };
 

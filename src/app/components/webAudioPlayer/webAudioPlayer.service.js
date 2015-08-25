@@ -6,7 +6,7 @@
       .service('webAudioPlayer', webAudioPlayer);
 
   /** @ngInject */
-  function webAudioPlayer() {
+  function webAudioPlayer(_) {
     this.NOTES = (function () {
       var notes = {};
       var toneSymbols = "CcDdEFfGgAaB";
@@ -41,17 +41,14 @@
       r: 0.25
     };
 
+    this._playing = {};
+
     var audioContext = new window.AudioContext();
     var compressor = audioContext.createDynamicsCompressor();
 
-    this.playNote = function(note, duration, semitone) {
+    this.buildOscillatorObject = function(note) {
       var osc = audioContext.createOscillator();
       var freq = this.NOTES[note];
-      var time = audioContext.currentTime;
-      var a = this.envelopeDefs.a;
-      var d = this.envelopeDefs.d;
-      var s = this.envelopeDefs.s;
-      var r = this.envelopeDefs.r;
       var gain = audioContext.createGain();
       var waveform = this.waveform;
       var standardOscillatorTypes = ['sine', 'square', 'sawtooth', 'triangle'];
@@ -66,12 +63,24 @@
       gain.connect(compressor);
       compressor.connect(audioContext.destination);
 
-      this.envelope(gain, time, 1, duration, a, d, s, r);
-
       osc.frequency.value = freq;
+
+      return {osc: osc, gain: gain};
+    };
+
+    this.playNote = function(note, duration) {
+      var oscObj = this.buildOscillatorObject(note);
+      var time = audioContext.currentTime;
+      var a = this.envelopeDefs.a;
+      var d = this.envelopeDefs.d;
+      var s = this.envelopeDefs.s;
+      var r = this.envelopeDefs.r;
+
+      this.envelope(oscObj.gain, time, 1, duration, a, d, s, r);
+
       // osc.detune.value = semitone * 100;
-      osc.start(time);
-      osc.stop(time + a + d + duration + r);
+      oscObj.osc.start(time);
+      oscObj.osc.stop(time + a + d + duration + r);
     };
 
     this.envelope = function(gainNode, time, volume, duration, a, d, s, r) {
@@ -84,6 +93,48 @@
       gain.linearRampToValueAtTime(0, time + a + d + duration + r);
     };
 
-  }
+    this.startEnvelope = function(gainNode, time, volume, a, d, s) {
+      var gain = gainNode.gain;
+      gain.cancelScheduledValues(0);
+      gain.setValueAtTime(0, time);
+      gain.linearRampToValueAtTime(volume, time + a);
+      gain.linearRampToValueAtTime(volume * s, time + a + d);
+    };
 
+    this.endEnvelope = function(gainNode, time, r) {
+      var gain = gainNode.gain;
+      gain.cancelScheduledValues(0);
+      gain.setValueAtTime(gainNode.gain.value, time);
+      gain.linearRampToValueAtTime(0, time + r);
+    };
+
+    this.startNote = function(note) {
+      var oscObj = this.buildOscillatorObject(note);
+      var time = audioContext.currentTime;
+      var a = this.envelopeDefs.a;
+      var d = this.envelopeDefs.d;
+      var s = this.envelopeDefs.s;
+
+      this.startEnvelope(oscObj.gain, time, 1, a, d, s);
+
+      oscObj.osc.start(time);
+      this._playing[note] = oscObj;
+    };
+
+    this.endNote = function(note) {
+      var oscObj = _.get(this._playing, note, false);
+      var time = audioContext.currentTime;
+      var r = this.envelopeDefs.r;
+
+      if (oscObj) {
+        this.endEnvelope(oscObj.gain, time, r);
+        oscObj.osc.stop(time + r);
+        delete(this._playing[note]);
+      }
+    };
+
+    this.clean = function() {
+      
+    };
+  }
 })();
