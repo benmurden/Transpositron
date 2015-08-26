@@ -5,7 +5,7 @@
     "angular": "~1.4.0",
     "angular-animate": "~1.4.0",
     "angular-cookies": "~1.4.0",
-    "angular-material": "~0.9.7",
+    "angular-material": "~0.10.1",
     "angular-touch": "~1.4.0",
     "animate.css": "~3.3.0",
     "keypress": "https://github.com/dmauro/Keypress.git",
