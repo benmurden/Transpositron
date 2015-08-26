@@ -26,7 +26,7 @@
 
     <div layout="vertical" layout-fill>
     
-      <md-content>
+      <md-content layout-fill>
         <header>
           <acme-navbar creationDate="main.creationDate" />
         </header>
@@ -38,70 +38,88 @@
           </p>
         </section>
     
-        <div layout-gt-sm="row" layout-sm="column" layout-align="center">
-          <md-card flex="33" flex-sm="100">
-            <md-card-content>
-              <h3>Envelope</h3>
-              <div layout>
-                <md-input-container flex="30" layout layout-align="center center">
-                  <label>Attack</label>
-                  <input class="flex-input" type="number" ng-model="main.ap.envelopeDefs.a" aria-label="attack" aria-controls="attack-slider">
-                </md-input-container>
-                <div flex layout layout-align="center center">
-                  <md-slider flex ng-model="main.ap.envelopeDefs.a" min="0" max="2" step="0.01" aria-label="attack" id="attack-slider"></md-slider>
+        <div flex layout-gt-sm="row" layout-sm="column" layout-align="center">
+          <div flex="33" flex-sm="100">
+            <md-card flex="33" flex-sm="100">
+              <md-card-content>
+                <h3>Envelope</h3>
+                <div layout>
+                  <md-input-container flex="30" layout>
+                    <label>Attack</label>
+                    <input class="flex-input" type="number" ng-model="main.ap.envelopeDefs.a" aria-label="attack" aria-controls="attack-slider">
+                  </md-input-container>
+                  <div flex layout layout-align="center center">
+                    <md-slider flex ng-model="main.ap.envelopeDefs.a" min="0" max="2" step="0.01" aria-label="attack" id="attack-slider"></md-slider>
+                  </div>
                 </div>
-              </div>
-              <div layout>
-                <md-input-container flex="30" layout layout-align="center center">
-                  <label>Decay</label>
-                  <input class="flex-input" type="number" ng-model="main.ap.envelopeDefs.d" aria-label="decay" aria-controls="decay-slider">
-                </md-input-container>
-                <div flex layout layout-align="center center">
-                  <md-slider flex ng-model="main.ap.envelopeDefs.d" min="0" max="2" step="0.01" aria-label="decay" id="decay-slider"></md-slider>
+                <div layout>
+                  <md-input-container flex="30" layout>
+                    <label>Decay</label>
+                    <input class="flex-input" type="number" ng-model="main.ap.envelopeDefs.d" aria-label="decay" aria-controls="decay-slider">
+                  </md-input-container>
+                  <div flex layout layout-align="center center">
+                    <md-slider flex ng-model="main.ap.envelopeDefs.d" min="0" max="2" step="0.01" aria-label="decay" id="decay-slider"></md-slider>
+                  </div>
                 </div>
-              </div>
-              <div layout>
-                <md-input-container flex="30" layout layout-align="center center">
-                  <label>Sustain</label>
-                  <input class="flex-input" type="number" ng-model="main.ap.envelopeDefs.s" aria-label="sustain" aria-controls="sustain-slider">
-                </md-input-container>
-                <div flex layout layout-align="center center">
-                  <md-slider flex ng-model="main.ap.envelopeDefs.s" min="0" max="1" step="0.01" aria-label="sustain" id="sustain-slider"></md-slider>
+                <div layout>
+                  <md-input-container flex="30" layout>
+                    <label>Sustain</label>
+                    <input class="flex-input" type="number" ng-model="main.ap.envelopeDefs.s" aria-label="sustain" aria-controls="sustain-slider">
+                  </md-input-container>
+                  <div flex layout layout-align="center center">
+                    <md-slider flex ng-model="main.ap.envelopeDefs.s" min="0" max="1" step="0.01" aria-label="sustain" id="sustain-slider"></md-slider>
+                  </div>
                 </div>
-              </div>
-              <div layout>
-                <md-input-container flex="30" layout layout-align="center center">
-                  <label>Release</label>
-                  <input class="flex-input" type="number" ng-model="main.ap.envelopeDefs.r" aria-label="release" aria-controls="release-slider">
-                </md-input-container>
-                <div flex layout layout-align="center center">
-                  <md-slider flex ng-model="main.ap.envelopeDefs.r" min="0" max="2" step="0.01" aria-label="release" id="release-slider"></md-slider>
+                <div layout>
+                  <md-input-container flex="30" layout>
+                    <label>Release</label>
+                    <input class="flex-input" type="number" ng-model="main.ap.envelopeDefs.r" aria-label="release" aria-controls="release-slider">
+                  </md-input-container>
+                  <div flex layout layout-align="center center">
+                    <md-slider flex ng-model="main.ap.envelopeDefs.r" min="0" max="2" step="0.01" aria-label="release" id="release-slider"></md-slider>
+                  </div>
                 </div>
-              </div>
-            </md-card-content>
-          </md-card>
-          <md-card flex="33" flex-sm="100">
-            <md-card-content>
-              <h3>Scale settings</h3>
-              <div layout="row">
-                <md-input-container flex="30" layout layout-align="center center">
-                  <label>Base Octave</label>
-                  <input class="flex-input" type="number" ng-model="main.baseOctave" aria-label="octave" aria-controls="octave-slider">
-                </md-input-container>
-                <div flex layout layout-margin layout-align="center center">
-                  <md-slider flex ng-model="main.baseOctave" min="0" max="5" step="1" aria-label="octave" id="octave-slider" ng-change="main.mapKeysToNotes()"></md-slider>
+              </md-card-content>
+            </md-card>
+          </div>
+          <div flex="33" flex-sm="100">
+            <md-card>
+              <md-card-content>
+                <h3>Scale settings</h3>
+                <div layout="row">
+                  <md-input-container flex="30" layout layout-align="center center">
+                    <label>Base Octave</label>
+                    <input class="flex-input" type="number" ng-model="main.baseOctave" aria-label="octave" aria-controls="octave-slider">
+                  </md-input-container>
+                  <div flex layout layout-margin layout-align="center center">
+                    <md-slider flex ng-model="main.baseOctave" min="0" max="5" step="1" aria-label="octave" id="octave-slider" ng-change="main.mapKeysToNotes()"></md-slider>
+                  </div>
                 </div>
-              </div>
-              <md-input-container>
-                <md-select ng-model="main.scale" ng-change="main.mapKeysToNotes()" aria-label="Scale" placeholder="Scale">
-                  <md-option ng-repeat="s in main.scales" value="{{s.value}}">{{s.name}}</md-option>
-                </md-select>
-              </md-input-container>
-            </md-card-content>
-          </md-card>
+                <md-input-container>
+                  <label>Scale</label>
+                  <md-select ng-model="main.scale" ng-change="main.mapKeysToNotes()" aria-label="Scale" placeholder="Scale">
+                    <md-option ng-repeat="s in main.scales" value="{{s.value}}">{{s.name}}</md-option>
+                  </md-select>
+                </md-input-container>
+              </md-card-content>
+            </md-card>
+          </div>
+          <div flex="33" flex-sm="100">
+            <md-card>
+              <md-card-content>
+                <h3>Wavetable instrument</h3>
+                <md-input-container>
+                <label>Instrument</label>
+                  <md-select ng-model="main.waveform" aria-label="wavetable instrument" placeholder="wavetable" ng-change="main.setWaveform()">
+                    <md-option ng-repeat="wave in main.waveforms" value="{{wave}}">{{wave}}</md-option>
+                  </md-select>
+                </md-input-container>
+              </md-card-content>
+            </md-card>
+          </div>
         </div>
 
-        <div class="techs" layout-align="center">
+        <!-- <div class="techs" layout-align="center">
           <md-card ng-repeat="awesomeThing in main.awesomeThings | orderBy:'rank'">
             <div class="thumbnail">
               <img class="pull-right" ng-src="assets/images/{{ awesomeThing.logo }}" alt="{{ awesomeThing.title }}">
@@ -112,7 +130,7 @@
               </div>
             </div>
           </md-card>
-        </div>
+        </div> -->
       </md-content>
     
     </div>
