@@ -9,11 +9,11 @@
   "unused": true,
   "validthis": true,
   "jasmine": true,
+  "browser": true,
   "globals": {
     "angular": false,
     "inject": false,
     "module": false,
-    "window": false,
     "_": false
   }
 }
