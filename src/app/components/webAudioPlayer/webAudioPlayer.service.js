@@ -6,7 +6,7 @@
       .service('webAudioPlayer', webAudioPlayer);
 
   /** @ngInject */
-  function webAudioPlayer(_) {
+  function webAudioPlayer(_, toastr, wavetables) {
     this.NOTES = (function () {
       var notes = {};
       var toneSymbols = "CcDdEFfGgAaB";
@@ -34,6 +34,7 @@
     }());
 
     this.waveform = 'sine';
+    this.waveforms = {};
     this.envelopeDefs = {
       a: 0.02,
       d: 0.6,
@@ -43,21 +44,38 @@
 
     this._playing = {};
 
+    var standardOscillatorTypes = ['sine', 'square', 'sawtooth', 'triangle'];
+
     var audioContext = new window.AudioContext();
     var compressor = audioContext.createDynamicsCompressor();
+
+    this.setWaveform = function(waveform) {
+      var self = this;
+      this.waveform = waveform;
+      if (_.indexOf(standardOscillatorTypes, waveform.toLowerCase()) === -1 && !this.waveforms[waveform]) {
+        wavetables.getWavetable(waveform).then(function(result) {
+          self.waveforms[waveform] = audioContext.createPeriodicWave(result.real, result.imag);
+        }, function() {
+          toastr.error('Error loading instrument ' + waveform);
+        });
+      }
+    };
 
     this.buildOscillatorObject = function(note) {
       var osc = audioContext.createOscillator();
       var freq = this.NOTES[note];
       var gain = audioContext.createGain();
       var waveform = this.waveform;
-      var standardOscillatorTypes = ['sine', 'square', 'sawtooth', 'triangle'];
 
-      if (standardOscillatorTypes.indexOf(waveform) !== -1) {
-        osc.type = waveform;
+      if (_.indexOf(standardOscillatorTypes, waveform.toLowerCase()) !== -1) {
+        osc.type = waveform.toLowerCase();
       } else {
-        osc.type = 'custom';
-        osc.setPeriodicWave(this.get(waveform + 'Wave'));
+        if (this.waveforms[waveform]) {
+          osc.type = 'custom';
+          osc.setPeriodicWave(this.waveforms[waveform]);
+        } else {
+          toastr.warning('Still loading your instrument.');
+        }
       }
       osc.connect(gain);
       gain.connect(compressor);
