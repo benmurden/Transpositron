@@ -6,7 +6,7 @@
     .controller('MainController', MainController);
 
   /** @ngInject */
-  function MainController($timeout, $log, webAudioPlayer, keypressHelper, webDevTec, toastr, _) {
+  function MainController($timeout, $log, webAudioPlayer, keypressHelper, wavetables, toastr, _) {
     var vm = this;
 
     vm.awesomeThings = [];
@@ -15,8 +15,7 @@
     vm.showToastr = showToastr;
     vm.ap = webAudioPlayer;
     // vm.keySequence = [90,88,67,86,66,78,77,188,190,65,83,68,70,71,72,74,75,76,186,222];
-    vm.keySequence = ['z','x','c','v','b','n','m',',','.','a','s','d','f','g','h','j','k','l',';','\''];
-    vm.keysDown = [];
+    vm.keySequence = ['z','x','c','v','b','n','m',',','.','a','s','d','f','g','h','j','k','l',';','\'','q','w','e','r','t','y','u','i','o','p','[',']'];
     vm.scale = '2212221';
     vm.baseOctave = 2;
     vm.keyNoteMap = {};
@@ -34,8 +33,8 @@
       var key = keypressHelper.convert_key_to_readable(e.keyCode);
       var sequenceIndex = _.indexOf(vm.keySequence, key);
 
-      if (sequenceIndex !== -1) {
-        $log.log(e.keyCode);
+      if (sequenceIndex !== -1 && vm.keyNoteMap[key]) {
+        $log.log(e.keyCode, vm.keyNoteMap[key]);
 
         webAudioPlayer.startNote(vm.keyNoteMap[key]);
       }
@@ -45,17 +44,20 @@
       var key = keypressHelper.convert_key_to_readable(e.keyCode);
       var sequenceIndex = _.indexOf(vm.keySequence, key);
 
-      if (sequenceIndex !== -1) {
-        $log.log('Key up: ' + e.keyCode);
+      if (sequenceIndex !== -1 && vm.keyNoteMap[key]) {
+        $log.log('Key up: ' + e.keyCode, vm.keyNoteMap[key]);
 
         webAudioPlayer.endNote(vm.keyNoteMap[key]);
       }
     };
 
+    vm.setWaveform = function() {
+      webAudioPlayer.setWaveform(vm.waveform);
+    };
+
     activate();
 
     function activate() {
-      getWebDevTec();
       vm.mapKeysToNotes();
       $timeout(function() {
         vm.classAnimation = 'rubberBand';
@@ -83,14 +85,6 @@
       vm.classAnimation = '';
     }
 
-    function getWebDevTec() {
-      vm.awesomeThings = webDevTec.getTec();
-
-      angular.forEach(vm.awesomeThings, function(awesomeThing) {
-        awesomeThing.rank = Math.random();
-      });
-    }
-
     vm.scales = [
       {
         name: 'Major',
@@ -103,6 +97,10 @@
       {
         name: 'Locrian',
         value: '1221222'
+      },
+      {
+        name: 'Chinese',
+        value: '42141'
       },
       {
         name: 'Japanese A',
@@ -120,6 +118,64 @@
         name: 'Japanese (Taishikicho)',
         value: '221112111'
       }
+    ];
+
+    vm.waveforms = [
+      "Sine",
+      "Square",
+      "Triangle",
+      "Sawtooth",
+      "01_Saw",
+      "02_Triangle",
+      "03_Square",
+      "04_Noise",
+      "05_Pulse",
+      "06_Warm_Saw",
+      "07_Warm_Triangle",
+      "08_Warm_Square",
+      "09_Dropped_Saw",
+      "10_Dropped_Square",
+      "11_TB303_Square",
+      "Bass",
+      "Bass_Amp360",
+      "Bass_Fuzz",
+      "Bass_Fuzz_ 2",
+      "Bass_Sub_Dub",
+      "Bass_Sub_Dub_2",
+      "Brass",
+      "Brit_Blues",
+      "Brit_Blues_Driven",
+      "Buzzy_1",
+      "Buzzy_2",
+      "Celeste",
+      "Chorus_Strings",
+      "Dissonant Piano",
+      "Dissonant_1",
+      "Dissonant_2",
+      "Dyna_EP_Bright",
+      "Dyna_EP_Med",
+      "Ethnic_33",
+      "Full_1",
+      "Full_2",
+      "Guitar_Fuzz",
+      "Harsh",
+      "Mkl_Hard",
+      "Organ_2",
+      "Organ_3",
+      "Phoneme_ah",
+      "Phoneme_bah",
+      "Phoneme_ee",
+      "Phoneme_o",
+      "Phoneme_ooh",
+      "Phoneme_pop_ahhhs",
+      "Piano",
+      "Putney_Wavering",
+      "Throaty",
+      "Trombone",
+      "Twelve String Guitar 1",
+      "Twelve_OpTines",
+      "Wurlitzer",
+      "Wurlitzer_2"
     ];
   }
 })();
