@@ -18,13 +18,14 @@
     vm.keySequence = ['z','x','c','v','b','n','m',',','.','a','s','d','f','g','h','j','k','l',';','\'','q','w','e','r','t','y','u','i','o','p','[',']'];
     vm.scale = '2212221';
     vm.baseOctave = 2;
+    vm.baseKeyOffset = 0;
     vm.keyNoteMap = {};
 
     vm.mapKeysToNotes = function() {
       var scalePosition = 0;
 
       vm.keySequence.forEach(function(v, i) {
-        vm.keyNoteMap[v] = webAudioPlayer.noteList[(vm.baseOctave * 12) + scalePosition];
+        vm.keyNoteMap[v] = webAudioPlayer.noteList[(vm.baseOctave * 12) + scalePosition + parseInt(vm.baseKeyOffset)];
         scalePosition += parseInt(vm.scale[i % vm.scale.length]);
       });
     };
@@ -117,6 +118,57 @@
       {
         name: 'Japanese (Taishikicho)',
         value: '221112111'
+      }
+    ];
+
+    vm.naturalKeys = [
+      {
+        name: 'C',
+        value: 0
+      },
+      {
+        name: 'C#',
+        value: 1
+      },
+      {
+        name: 'D',
+        value: 2
+      },
+      {
+        name: 'D#',
+        value: 3
+      },
+      {
+        name: 'E',
+        value: 4
+      },
+      {
+        name: 'F',
+        value: 5
+      },
+      {
+        name: 'F#',
+        value: 6
+      },
+      {
+        name: 'G',
+        value: 7
+      },
+      {
+        name: 'G#',
+        value: 8
+      },
+      {
+        name: 'A',
+        value: 9
+      },
+      {
+        name: 'A#',
+        value: 10
+      },
+      {
+        name: 'B',
+        value: 11
       }
     ];
 

@@ -101,6 +101,12 @@
                     <md-option ng-repeat="s in main.scales" value="{{s.value}}">{{s.name}}</md-option>
                   </md-select>
                 </md-input-container>
+                <md-input-container>
+                  <label>Key</label>
+                  <md-select ng-model="main.baseKeyOffset" ng-change="main.mapKeysToNotes()" aria-label="Key" placeholder="Key">
+                    <md-option ng-repeat="k in main.naturalKeys" value="{{k.value}}">{{k.name}}</md-option>
+                  </md-select>
+                </md-input-container>
               </md-card-content>
             </md-card>
           </div>
