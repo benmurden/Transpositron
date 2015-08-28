@@ -10,12 +10,12 @@
     var directive = {
       restrict: 'E',
       templateUrl: 'app/components/navbar/navbar.html',
-      scope: {
-          creationDate: '='
-      },
+      scope: true,
       controller: NavbarController,
       controllerAs: 'vm',
-      bindToController: true
+      bindToController: {
+          creationDate: '='
+      }
     };
 
     return directive;
