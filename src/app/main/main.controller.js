@@ -88,6 +88,14 @@
 
     vm.scales = [
       {
+        name: 'Arabian A',
+        value: '21212121'
+      },
+      {
+        name: 'Arabian B',
+        value: '2211222'
+      },
+      {
         name: 'Major',
         value: '2212221'
       },
