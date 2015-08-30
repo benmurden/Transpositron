@@ -96,6 +96,10 @@
         value: '2211222'
       },
       {
+        name: 'Byzantine',
+        value: '1312131'
+      }
+      {
         name: 'Major',
         value: '2212221'
       },
