@@ -88,6 +88,14 @@
 
     vm.scales = [
       {
+        name: 'Aeolian',
+        value: '2122122'
+      },
+      {
+        name: 'Algerian',
+        value: '21211131'
+      },
+      {
         name: 'Arabian A',
         value: '21212121'
       },
@@ -98,7 +106,11 @@
       {
         name: 'Byzantine',
         value: '1312131'
-      }
+      },
+      {
+        name: 'Egyptian',
+        value: '23232'
+      },
       {
         name: 'Major',
         value: '2212221'
