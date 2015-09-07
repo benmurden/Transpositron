@@ -107,6 +107,13 @@
                     <md-option ng-repeat="k in main.naturalKeys" value="{{k.value}}">{{k.name}}</md-option>
                   </md-select>
                 </md-input-container>
+                <div layout="row">
+                  <md-input-container flex="60">
+                    <label>Custom scale</label>
+                    <input class="flex-input" type="text" ng-model="main.scale" aria-label="Custom scale">
+                  </md-input-container>
+                  <md-button flex class="md-raised" ng-click="main.mapKeysToNotes()">Set</md-button>
+                </div>
               </md-card-content>
             </md-card>
           </div>
