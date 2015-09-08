@@ -20,6 +20,7 @@
     vm.baseOctave = 2;
     vm.baseKeyOffset = 0;
     vm.keyNoteMap = {};
+    vm.notesPlaying = [];
 
     vm.mapKeysToNotes = function() {
       var scalePosition = 0;
@@ -36,6 +37,7 @@
 
       if (sequenceIndex !== -1 && vm.keyNoteMap[key]) {
         $log.log(e.keyCode, vm.keyNoteMap[key]);
+        vm.notesPlaying.push(vm.keyNoteMap[key]);
 
         webAudioPlayer.startNote(vm.keyNoteMap[key]);
       }
@@ -47,6 +49,7 @@
 
       if (sequenceIndex !== -1 && vm.keyNoteMap[key]) {
         $log.log('Key up: ' + e.keyCode, vm.keyNoteMap[key]);
+        _.remove(vm.notesPlaying, vm.keyNoteMap[key]);
 
         webAudioPlayer.endNote(vm.keyNoteMap[key]);
       }
