@@ -10,7 +10,7 @@
     this.getWavetable = function(name) {
       return $q(function(resolve, reject) {
         if (!_wavetables[name]) {
-          $http.get('/assets/wavetables/' + name + '.json').then(function(result) {
+          $http.get('assets/wavetables/' + name + '.json').then(function(result) {
             var real = new Float32Array(result.data.real);
             var imag = new Float32Array(result.data.imag);
 
