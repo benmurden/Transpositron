@@ -71,8 +71,8 @@
         osc.type = waveform.toLowerCase();
       } else {
         if (this.waveforms[waveform]) {
-          osc.type = 'custom';
           osc.setPeriodicWave(this.waveforms[waveform]);
+          // osc.type = 'custom';
         } else {
           toastr.warning('Still loading your instrument.');
         }
