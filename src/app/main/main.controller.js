@@ -107,16 +107,8 @@
         value: '2211222'
       },
       {
-        name: 'Asavari Theta',
-        value: '2122122'
-      },
-      {
         name: 'Balinese',
         value: '12414'
-      },
-      {
-        name: 'Bhairav',
-        value: '1312131'
       },
       {
         name: 'Byzantine',
