@@ -37,7 +37,7 @@
 
       if (sequenceIndex !== -1 && vm.keyNoteMap[key]) {
         $log.log(e.keyCode, vm.keyNoteMap[key]);
-        vm.notesPlaying.push(vm.keyNoteMap[key]);
+        vm.notesPlaying.push({key: vm.keyNoteMap[key]});
 
         webAudioPlayer.startNote(vm.keyNoteMap[key]);
       }
@@ -49,7 +49,9 @@
 
       if (sequenceIndex !== -1 && vm.keyNoteMap[key]) {
         $log.log('Key up: ' + e.keyCode, vm.keyNoteMap[key]);
-        _.remove(vm.notesPlaying, vm.keyNoteMap[key]);
+        _.remove(vm.notesPlaying, function(v) {
+          return v.key === vm.keyNoteMap[key];
+        });
 
         webAudioPlayer.endNote(vm.keyNoteMap[key]);
       }

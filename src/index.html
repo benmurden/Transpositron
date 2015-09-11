@@ -36,6 +36,7 @@
           <p class="lead">
             Transpose your keyboard and easily play any scale.
           </p>
+          <p><span ng-repeat="note in main.notesPlaying track by $index">{{main.notesPlaying[$index].key}}</span></p>
         </section>
     
         <div flex layout-gt-sm="row" layout-sm="column" layout-align="center">
@@ -85,6 +86,19 @@
           <div flex="33" flex-sm="100">
             <md-card>
               <md-card-content>
+                <h3>Wavetable instrument</h3>
+                <md-input-container>
+                <label>Instrument</label>
+                  <md-select ng-model="main.waveform" aria-label="wavetable instrument" placeholder="wavetable" ng-change="main.setWaveform()">
+                    <md-option ng-repeat="wave in main.waveforms" value="{{wave}}">{{wave}}</md-option>
+                  </md-select>
+                </md-input-container>
+              </md-card-content>
+            </md-card>
+          </div>
+          <div flex="33" flex-sm="100">
+            <md-card>
+              <md-card-content>
                 <h3>Scale settings</h3>
                 <div layout="row">
                   <md-input-container flex="30" layout>
@@ -114,19 +128,6 @@
                   </md-input-container>
                   <md-button flex class="md-raised" ng-click="main.mapKeysToNotes()">Set</md-button>
                 </div>
-              </md-card-content>
-            </md-card>
-          </div>
-          <div flex="33" flex-sm="100">
-            <md-card>
-              <md-card-content>
-                <h3>Wavetable instrument</h3>
-                <md-input-container>
-                <label>Instrument</label>
-                  <md-select ng-model="main.waveform" aria-label="wavetable instrument" placeholder="wavetable" ng-change="main.setWaveform()">
-                    <md-option ng-repeat="wave in main.waveforms" value="{{wave}}">{{wave}}</md-option>
-                  </md-select>
-                </md-input-container>
               </md-card-content>
             </md-card>
           </div>
