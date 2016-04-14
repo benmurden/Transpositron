@@ -12,7 +12,6 @@
     vm.awesomeThings = [];
     vm.classAnimation = '';
     vm.creationDate = 1440125657487;
-    vm.showToastr = showToastr;
     vm.ap = webAudioPlayer;
     // vm.keySequence = [90,88,67,86,66,78,77,188,190,65,83,68,70,71,72,74,75,76,186,222];
     vm.keySequence = ['z','x','c','v','b','n','m',',','.','a','s','d','f','g','h','j','k','l',';','\'','q','w','e','r','t','y','u','i','o','p','[',']'];
@@ -35,6 +34,10 @@
       var key = keypressHelper.convert_key_to_readable(e.keyCode);
       var sequenceIndex = _.indexOf(vm.keySequence, key);
 
+      if (e.ctrlKey || e.altKey) {
+        return true;
+      }
+
       if (sequenceIndex !== -1 && vm.keyNoteMap[key]) {
         $log.log(e.keyCode, vm.keyNoteMap[key]);
         vm.notesPlaying.push({key: vm.keyNoteMap[key]});
@@ -46,6 +49,10 @@
     vm.keyUp = function(e) {
       var key = keypressHelper.convert_key_to_readable(e.keyCode);
       var sequenceIndex = _.indexOf(vm.keySequence, key);
+
+      if (e.ctrlKey || e.altKey) {
+        return true;
+      }
 
       if (sequenceIndex !== -1 && vm.keyNoteMap[key]) {
         $log.log('Key up: ' + e.keyCode, vm.keyNoteMap[key]);
@@ -75,11 +82,11 @@
           keys: v,
           on_keydown: function(e, count, duplicate) {
             if (!duplicate) {
-              vm.keyDown(e);
+              return vm.keyDown(e);
             }
           },
           on_keyup: function(e) {
-            vm.keyUp(e);
+            return vm.keyUp(e);
           }
         });
       });
