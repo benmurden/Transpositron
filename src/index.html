@@ -25,20 +25,21 @@
     <![endif]-->
 
     <div layout="vertical" layout-fill ng-controller="MainController as main">
-    
+
       <md-content layout-fill>
         <header>
           <acme-navbar creation-date="main.creationDate" />
         </header>
-    
+
         <section class="jumbotron">
           <h1>Transpositron</h1>
           <p class="lead">
             Transpose your keyboard and easily play any scale.
           </p>
-          <p><span ng-repeat="note in main.notesPlaying track by $index">{{main.notesPlaying[$index].key}}</span></p>
+          <p><span ng-repeat="note in main.notesPlaying">{{note.key}}</span></p>
+          <p><span>{{main.notesPlayed}}</span></p>
         </section>
-    
+
         <div flex layout-gt-sm="row" layout-sm="column" layout-align="center">
           <div flex="33" flex-sm="100">
             <md-card flex="33" flex-sm="100">
@@ -146,9 +147,9 @@
           </md-card>
         </div> -->
       </md-content>
-    
+
     </div>
-    
+
 
     <!-- build:js(src) scripts/vendor.js -->
     <!-- bower:js -->

@@ -6,7 +6,7 @@
     .controller('MainController', MainController);
 
   /** @ngInject */
-  function MainController($timeout, $log, webAudioPlayer, keypressHelper, wavetables, toastr, _) {
+  function MainController($scope, $timeout, $log, webAudioPlayer, keypressHelper, wavetables, toastr, _) {
     var vm = this;
 
     vm.awesomeThings = [];
@@ -40,7 +40,9 @@
 
       if (sequenceIndex !== -1 && vm.keyNoteMap[key]) {
         $log.log(e.keyCode, vm.keyNoteMap[key]);
-        vm.notesPlaying.push({key: vm.keyNoteMap[key]});
+        $scope.$apply(function() {
+          vm.notesPlaying.push({key: vm.keyNoteMap[key]});
+        });
 
         webAudioPlayer.startNote(vm.keyNoteMap[key]);
       }
@@ -56,8 +58,10 @@
 
       if (sequenceIndex !== -1 && vm.keyNoteMap[key]) {
         $log.log('Key up: ' + e.keyCode, vm.keyNoteMap[key]);
-        _.remove(vm.notesPlaying, function(v) {
-          return v.key === vm.keyNoteMap[key];
+        $scope.$apply(function() {
+          _.remove(vm.notesPlaying, function(v) {
+            return v.key === vm.keyNoteMap[key];
+          });
         });
 
         webAudioPlayer.endNote(vm.keyNoteMap[key]);
@@ -264,5 +268,7 @@
       "Wurlitzer",
       "Wurlitzer_2"
     ];
+
+    return vm;
   }
 })();
