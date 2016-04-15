@@ -39,7 +39,7 @@
           <p><span ng-repeat="note in main.notesPlaying">{{note.key}}</span></p>
         </section>
 
-        <tn-keyboard flex notes-playing="main.notesPlaying" scale="main.scale" naturalKey="main.baseKeyOffset"></tn-keyboard>
+        <tn-keyboard flex notes-playing="main.notesPlaying" scale="main.scale" natural-key="main.baseKeyOffset" base-octave="main.baseOctave"></tn-keyboard>
 
         <div flex layout-gt-sm="row" layout-sm="column" layout-align="center">
           <div flex="33" flex-sm="100">

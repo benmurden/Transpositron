@@ -1,5 +1,5 @@
 <div flex layout="row">
-  <div flex ng-repeat="type in vm.keyPattern track by $index" class="piano-key" ng-class="{'black-key': type}">
-    <div class="inner"></div>
+  <div flex ng-repeat="key in vm.keyboardNotes" class="piano-key" ng-class="{'black-key': key.type}">
+    <div class="inner">{{key.label}}</div>
   </div>
 </div>
