@@ -24,7 +24,7 @@
     return directive;
 
     /** @ngInject */
-    function TnKeyboardController($scope, $log, webAudioPlayer) {
+    function TnKeyboardController($scope, $log, webAudioPlayer, _) {
       var vm = this;
 
       vm.keyPattern = [0,1,0,1,0,0,1,0,1,0,1,0];
@@ -39,11 +39,14 @@
         }
       };
 
+      vm.isBeingPlayed = function(note) {
+        return _.some(vm.notesPlaying, {key: note});
+      };
+
       activate();
 
       function activate() {
         vm.generateKeyboardNotes();
-        $log.log(vm.keyboardNotes);
       }
 
       return vm;
