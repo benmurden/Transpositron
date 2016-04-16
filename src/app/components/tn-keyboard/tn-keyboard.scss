@@ -4,7 +4,14 @@ $bkWidth: 4vw;
 .piano-key {
   background: white;
   box-shadow: inset 0 -5px 5px hsla(0, 0, 0, 0.8);
-  height: $keyHeight;
+  // height: $keyHeight;
+
+  .inner {
+    color: hsl(0, 0, 50);
+    text-align: center;
+    padding-top: $keyHeight;
+    padding-bottom: 10px;
+  }
 }
 
 .black-key {
@@ -14,7 +21,8 @@ $bkWidth: 4vw;
   .inner {
     background: hsl(0, 0, 10);
     width: $bkWidth;
-    height: $keyHeight * 0.8;
+    // height: $keyHeight * 0.8;
+    padding-top: $keyHeight * 0.7;
     position: absolute;
     left: -$bkWidth / 2;
     border-radius: 0 0 1vw 1vw;
