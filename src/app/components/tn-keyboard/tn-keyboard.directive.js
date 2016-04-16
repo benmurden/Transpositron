@@ -31,7 +31,7 @@
       vm.keyboardNotes = [];
 
       vm.generateKeyboardNotes = function() {
-        for (var i = vm.baseOctave * 12; i < (vm.baseOctave + 2) * 12; i++) {
+        for (var i = vm.baseOctave * 12; i < (vm.baseOctave + 3) * 12; i++) {
           vm.keyboardNotes.push({
             label: webAudioPlayer.noteList[i],
             type: vm.keyPattern[i % 12]
