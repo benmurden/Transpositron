@@ -1,16 +1,27 @@
+$layout-breakpoint-xs:     600px !default;
+$layout-breakpoint-sm:     960px !default;
+$layout-breakpoint-md:     1280px !default;
+$layout-breakpoint-lg:     1920px !default;
 $keyHeight: 25vh;
 $bkWidth: 4vw;
 
 .piano-key {
-  background: white;
+  background-image: linear-gradient(175deg, hsla(0,0%,100%,1) 0%,hsla(0,0%,95%,1) 50%,hsla(0,0%,88%,1) 51%,hsla(0,0%,96%,1) 100%);
   box-shadow: inset 0 -5px 5px hsla(0, 0, 0, 0.8);
-  // height: $keyHeight;
+  transition: background-position 0.2s ease-out, box-shadow 0.2s ease-out;
+  background-position: 0 0;
+  background-size: auto 200%;
 
   .inner {
     color: hsl(0, 0, 50);
     text-align: center;
     padding-top: $keyHeight;
     padding-bottom: 10px;
+  }
+
+  &.note-down {
+    box-shadow: inset 0 -8px 5px hsla(0, 0, 0, 0.8);
+    background-position: 0 100%;
   }
 }
 
@@ -19,12 +30,29 @@ $bkWidth: 4vw;
   position: relative;
 
   .inner {
-    background: hsl(0, 0, 10);
-    width: $bkWidth;
+    background-image: linear-gradient(175deg, hsla(0,0%,7%,1) 0%,hsla(0,0%,11%,1) 9%,hsla(0,0%,17%,1) 24%,hsla(0,0%,7%,1) 40%,hsla(0,0%,0%,1) 49%,hsla(0,0%,17%,1) 50%,hsla(0,0%,28%,1) 61%,hsla(0,0%,40%,1) 75%,hsla(0,0%,35%,1) 88%,hsla(0,0%,30%,1) 100%);
+    transition: background-position 0.2s ease-out, background-size 0.2s, box-shadow 0.2s ease-out;
+    background-position: 0 0;
+    background-size: auto 200%;
+    width: $bkWidth * 1.6;
     // height: $keyHeight * 0.8;
     padding-top: $keyHeight * 0.7;
     position: absolute;
-    left: -$bkWidth / 2;
+    left: -$bkWidth * 0.8;
     border-radius: 0 0 1vw 1vw;
+
+    @media(min-width: $layout-breakpoint-xs) {
+      width: $bkWidth;
+      left: -$bkWidth / 2;
+    }
+
+    @media(min-width: $layout-breakpoint-md) {
+      width: $bkWidth * 0.6;
+      left: -$bkWidth * 0.3;
+    }
+  }
+
+  &.note-down .inner {
+    background-position: 0 100%;
   }
 }
