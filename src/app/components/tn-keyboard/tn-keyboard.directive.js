@@ -17,7 +17,9 @@
           notesPlaying: '=',
           scale: '=',
           baseKeyOffset: '=',
-          baseOctave: '='
+          baseOctave: '=',
+          playNote: '&',
+          stopNote: '&'
       }
     };
 
@@ -41,6 +43,14 @@
 
       vm.isBeingPlayed = function(note) {
         return _.some(vm.notesPlaying, {key: note});
+      };
+
+      vm.noteDown = function(note) {
+        vm.playNote()(note);
+      };
+
+      vm.noteUp = function(note) {
+        vm.stopNote()(note);
       };
 
       activate();

@@ -30,6 +30,20 @@
       });
     };
 
+    vm.noteOn = function(note) {
+      vm.notesPlaying.push({key: note});
+
+      webAudioPlayer.startNote(note);
+    };
+
+    vm.noteOff = function(note) {
+      _.remove(vm.notesPlaying, function(v) {
+        return v.key === note;
+      });
+
+      webAudioPlayer.endNote(note);
+    };
+
     vm.keyDown = function(e) {
       var key = keypressHelper.convert_key_to_readable(e.keyCode);
       var sequenceIndex = _.indexOf(vm.keySequence, key);
@@ -41,10 +55,8 @@
       if (sequenceIndex !== -1 && vm.keyNoteMap[key]) {
         $log.log(e.keyCode, vm.keyNoteMap[key]);
         $scope.$apply(function() {
-          vm.notesPlaying.push({key: vm.keyNoteMap[key]});
+          vm.noteOn(vm.keyNoteMap[key]);
         });
-
-        webAudioPlayer.startNote(vm.keyNoteMap[key]);
       }
     };
 
@@ -59,12 +71,8 @@
       if (sequenceIndex !== -1 && vm.keyNoteMap[key]) {
         $log.log('Key up: ' + e.keyCode, vm.keyNoteMap[key]);
         $scope.$apply(function() {
-          _.remove(vm.notesPlaying, function(v) {
-            return v.key === vm.keyNoteMap[key];
-          });
+          vm.noteOff(vm.keyNoteMap[key]);
         });
-
-        webAudioPlayer.endNote(vm.keyNoteMap[key]);
       }
     };
 
