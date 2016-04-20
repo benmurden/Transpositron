@@ -95,6 +95,20 @@
       });
     };
 
+    vm.noteOn = function(note) {
+      vm.notesPlaying.push({key: note});
+
+      webAudioPlayer.startNote(note);
+    };
+
+    vm.noteOff = function(note) {
+      _.remove(vm.notesPlaying, function(v) {
+        return v.key === note;
+      });
+
+      webAudioPlayer.endNote(note);
+    };
+
     vm.keyDown = function(e) {
       var key = keypressHelper.convert_key_to_readable(e.keyCode);
       var sequenceIndex = _.indexOf(vm.keySequence, key);
@@ -106,10 +120,8 @@
       if (sequenceIndex !== -1 && vm.keyNoteMap[key]) {
         $log.log(e.keyCode, vm.keyNoteMap[key]);
         $scope.$apply(function() {
-          vm.notesPlaying.push({key: vm.keyNoteMap[key]});
+          vm.noteOn(vm.keyNoteMap[key]);
         });
-
-        webAudioPlayer.startNote(vm.keyNoteMap[key]);
       }
     };
 
@@ -124,12 +136,8 @@
       if (sequenceIndex !== -1 && vm.keyNoteMap[key]) {
         $log.log('Key up: ' + e.keyCode, vm.keyNoteMap[key]);
         $scope.$apply(function() {
-          _.remove(vm.notesPlaying, function(v) {
-            return v.key === vm.keyNoteMap[key];
-          });
+          vm.noteOff(vm.keyNoteMap[key]);
         });
-
-        webAudioPlayer.endNote(vm.keyNoteMap[key]);
       }
     };
 
@@ -399,6 +407,39 @@
 
   angular
     .module('transpositron')
+    .directive('acmeNavbar', acmeNavbar);
+
+  /** @ngInject */
+  function acmeNavbar() {
+    var directive = {
+      restrict: 'E',
+      templateUrl: 'app/components/navbar/navbar.html',
+      scope: true,
+      controller: NavbarController,
+      controllerAs: 'vm',
+      bindToController: {
+          creationDate: '='
+      }
+    };
+
+    return directive;
+
+    /** @ngInject */
+    function NavbarController(moment) {
+      var vm = this;
+
+      // "vm.creation" is avaible by directive option "bindToController: true"
+      vm.relativeDate = moment(vm.creationDate).fromNow();
+    }
+  }
+
+})();
+
+(function() {
+  'use strict';
+
+  angular
+    .module('transpositron')
     .directive('acmeMalarkey', acmeMalarkey);
 
   /** @ngInject */
@@ -475,39 +516,6 @@
 
   angular
     .module('transpositron')
-    .directive('acmeNavbar', acmeNavbar);
-
-  /** @ngInject */
-  function acmeNavbar() {
-    var directive = {
-      restrict: 'E',
-      templateUrl: 'app/components/navbar/navbar.html',
-      scope: true,
-      controller: NavbarController,
-      controllerAs: 'vm',
-      bindToController: {
-          creationDate: '='
-      }
-    };
-
-    return directive;
-
-    /** @ngInject */
-    function NavbarController(moment) {
-      var vm = this;
-
-      // "vm.creation" is avaible by directive option "bindToController: true"
-      vm.relativeDate = moment(vm.creationDate).fromNow();
-    }
-  }
-
-})();
-
-(function() {
-  'use strict';
-
-  angular
-    .module('transpositron')
     .directive('tnKeyboard', tnKeyboard);
 
   /** @ngInject */
@@ -522,7 +530,9 @@
           notesPlaying: '=',
           scale: '=',
           baseKeyOffset: '=',
-          baseOctave: '='
+          baseOctave: '=',
+          playNote: '&',
+          stopNote: '&'
       }
     };
 
@@ -546,6 +556,14 @@
 
       vm.isBeingPlayed = function(note) {
         return _.some(vm.notesPlaying, {key: note});
+      };
+
+      vm.noteDown = function(note) {
+        vm.playNote()(note);
+      };
+
+      vm.noteUp = function(note) {
+        vm.stopNote()(note);
       };
 
       activate();
@@ -763,5 +781,5 @@
   }
 })();
 
-angular.module("transpositron").run(["$templateCache", function($templateCache) {$templateCache.put("app/components/navbar/navbar.html","<md-toolbar layout=\"row\" layout-align=\"center center\"><md-button href=\"/\">Transpositron</md-button><section flex=\"\" layout=\"row\" layout-align=\"left center\"><md-button href=\"/\" class=\"md-raised\">Home</md-button><md-button href=\"/#/about/\" class=\"md-raised\">About</md-button></section><md-button hide=\"\" show-gt-sm=\"\" class=\"acme-navbar-text\">Application was created {{ vm.relativeDate }}.</md-button></md-toolbar>");
-$templateCache.put("app/components/tn-keyboard/tn-keyboard.html","<div flex=\"\" layout=\"row\"><div flex=\"\" ng-repeat=\"key in vm.keyboardNotes\" class=\"piano-key\" ng-class=\"{\'black-key\': key.type, hide: $index >= 12, \'show-gt-xs\': $index >= 12 && $index < 24, \'show-gt-md\': $index >= 24, \'note-down\': vm.isBeingPlayed(key.label)}\"><div class=\"inner\">{{key.label}}</div></div></div>");}]);
+angular.module("transpositron").run(["$templateCache", function($templateCache) {$templateCache.put("app/components/tn-keyboard/tn-keyboard.html","<div flex=\"\" layout=\"row\"><div flex=\"\" ng-repeat=\"key in vm.keyboardNotes\" class=\"piano-key\" ng-class=\"{\'black-key\': key.type, hide: $index >= 12, \'show-gt-xs\': $index >= 12 && $index < 24, \'show-gt-md\': $index >= 24, \'note-down\': vm.isBeingPlayed(key.label)}\"><div class=\"inner\" ng-mousedown=\"vm.noteDown(key.label)\" ng-mouseup=\"vm.noteUp(key.label)\" ng-mouseout=\"vm.noteUp(key.label)\">{{key.label}}</div></div></div>");
+$templateCache.put("app/components/navbar/navbar.html","<md-toolbar layout=\"row\" layout-align=\"center center\"><md-button href=\"/\">Transpositron</md-button><section flex=\"\" layout=\"row\" layout-align=\"left center\"><md-button href=\"#/\" class=\"md-raised\">Home</md-button><md-button href=\"#/about/\" class=\"md-raised\">About</md-button></section><md-button hide=\"\" show-gt-sm=\"\" class=\"acme-navbar-text\">Application was created {{ vm.relativeDate }}.</md-button></md-toolbar>");}]);
