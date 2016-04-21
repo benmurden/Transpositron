@@ -53,6 +53,13 @@
         vm.stopNote()(note);
       };
 
+      vm.mouseOver = function(e, note) {
+        // Send noteDown if only the left mouse button is held.
+        if (e.buttons === 1) {
+          return vm.noteDown(note);
+        }
+      };
+
       activate();
 
       function activate() {
