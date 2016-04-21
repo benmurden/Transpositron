@@ -127,6 +127,10 @@
     };
 
     this.startNote = function(note) {
+      if (!note || !!this._playing[note]) {
+        return;
+      }
+
       var oscObj = this.buildOscillatorObject(note);
       var time = audioContext.currentTime;
       var a = this.envelopeDefs.a;
@@ -140,6 +144,10 @@
     };
 
     this.endNote = function(note) {
+      if (!note) {
+        return;
+      }
+
       var oscObj = _.get(this._playing, note, false);
       var time = audioContext.currentTime;
       var r = this.envelopeDefs.r;
@@ -152,7 +160,7 @@
     };
 
     this.clean = function() {
-      
+
     };
   }
 })();
