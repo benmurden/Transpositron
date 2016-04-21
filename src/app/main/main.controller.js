@@ -31,9 +31,11 @@
     };
 
     vm.noteOn = function(note) {
-      vm.notesPlaying.push({key: note});
+      if (!_.some(vm.notesPlaying, {key: note})) {
+        vm.notesPlaying.push({key: note});
 
-      webAudioPlayer.startNote(note);
+        webAudioPlayer.startNote(note);
+      }
     };
 
     vm.noteOff = function(note) {
