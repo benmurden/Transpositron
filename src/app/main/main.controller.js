@@ -16,7 +16,7 @@
     // vm.keySequence = [90,88,67,86,66,78,77,188,190,65,83,68,70,71,72,74,75,76,186,222];
     vm.keySequence = ['z','x','c','v','b','n','m',',','.','a','s','d','f','g','h','j','k','l',';','\'','q','w','e','r','t','y','u','i','o','p','[',']'];
     vm.scale = '2212221';
-    vm.baseOctave = 2;
+    vm.baseOctave = 3;
     vm.baseKeyOffset = 0;
     vm.keyNoteMap = {};
     vm.notesPlaying = [];
