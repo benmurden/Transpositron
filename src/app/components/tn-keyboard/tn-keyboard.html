@@ -1,5 +1,5 @@
-<div flex layout="row">
+<div flex layout="row" tn-touchmove="vm.touchmove($event)">
   <div flex ng-repeat="key in vm.keyboardNotes" class="piano-key" ng-class="{'black-key': key.type, hide: $index >= 12, 'show-gt-xs': $index >= 12 && $index < 24, 'show-gt-md': $index >= 24, 'note-down': vm.isBeingPlayed(key.label)}">
-    <div class="inner" ng-mousedown="vm.noteDown(key.label)" ng-mouseup="vm.noteUp(key.label)" ng-mouseout="vm.noteUp(key.label)" ng-mouseover="vm.mouseOver($event, key.label)">{{key.label}}</div>
+    <div id="{{key.label}}" class="inner" ng-mousedown="vm.noteDown(key.label)" ng-mouseup="vm.noteUp(key.label)" ng-mouseout="vm.noteUp(key.label)" ng-mouseover="vm.mouseOver($event, key.label)" tn-touchstart="vm.touchStart($event)" tn-touchend="vm.touchEnd($event)">{{key.label}}</div>
   </div>
 </div>
