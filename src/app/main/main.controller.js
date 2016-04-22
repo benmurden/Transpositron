@@ -137,6 +137,10 @@
         value: '23232'
       },
       {
+        name: 'Harmonic Minor',
+        value: '21222131',
+      },
+      {
         name: 'Major',
         value: '2212221'
       },
