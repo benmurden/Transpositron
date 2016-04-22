@@ -81,7 +81,7 @@
     // vm.keySequence = [90,88,67,86,66,78,77,188,190,65,83,68,70,71,72,74,75,76,186,222];
     vm.keySequence = ['z','x','c','v','b','n','m',',','.','a','s','d','f','g','h','j','k','l',';','\'','q','w','e','r','t','y','u','i','o','p','[',']'];
     vm.scale = '2212221';
-    vm.baseOctave = 2;
+    vm.baseOctave = 3;
     vm.baseKeyOffset = 0;
     vm.keyNoteMap = {};
     vm.notesPlaying = [];
@@ -96,9 +96,11 @@
     };
 
     vm.noteOn = function(note) {
-      vm.notesPlaying.push({key: note});
+      if (!_.some(vm.notesPlaying, {key: note})) {
+        vm.notesPlaying.push({key: note});
 
-      webAudioPlayer.startNote(note);
+        webAudioPlayer.startNote(note);
+      }
     };
 
     vm.noteOff = function(note) {
@@ -407,39 +409,6 @@
 
   angular
     .module('transpositron')
-    .directive('acmeNavbar', acmeNavbar);
-
-  /** @ngInject */
-  function acmeNavbar() {
-    var directive = {
-      restrict: 'E',
-      templateUrl: 'app/components/navbar/navbar.html',
-      scope: true,
-      controller: NavbarController,
-      controllerAs: 'vm',
-      bindToController: {
-          creationDate: '='
-      }
-    };
-
-    return directive;
-
-    /** @ngInject */
-    function NavbarController(moment) {
-      var vm = this;
-
-      // "vm.creation" is avaible by directive option "bindToController: true"
-      vm.relativeDate = moment(vm.creationDate).fromNow();
-    }
-  }
-
-})();
-
-(function() {
-  'use strict';
-
-  angular
-    .module('transpositron')
     .directive('acmeMalarkey', acmeMalarkey);
 
   /** @ngInject */
@@ -516,6 +485,39 @@
 
   angular
     .module('transpositron')
+    .directive('acmeNavbar', acmeNavbar);
+
+  /** @ngInject */
+  function acmeNavbar() {
+    var directive = {
+      restrict: 'E',
+      templateUrl: 'app/components/navbar/navbar.html',
+      scope: true,
+      controller: NavbarController,
+      controllerAs: 'vm',
+      bindToController: {
+          creationDate: '='
+      }
+    };
+
+    return directive;
+
+    /** @ngInject */
+    function NavbarController(moment) {
+      var vm = this;
+
+      // "vm.creation" is avaible by directive option "bindToController: true"
+      vm.relativeDate = moment(vm.creationDate).fromNow();
+    }
+  }
+
+})();
+
+(function() {
+  'use strict';
+
+  angular
+    .module('transpositron')
     .directive('tnKeyboard', tnKeyboard);
 
   /** @ngInject */
@@ -546,11 +548,13 @@
       vm.keyboardNotes = [];
 
       vm.generateKeyboardNotes = function() {
+        var j = 0;
         for (var i = vm.baseOctave * 12; i < (vm.baseOctave + 3) * 12; i++) {
-          vm.keyboardNotes.push({
+          vm.keyboardNotes[j] = {
             label: webAudioPlayer.noteList[i],
             type: vm.keyPattern[i % 12]
-          });
+          };
+          j++;
         }
       };
 
@@ -566,6 +570,72 @@
         vm.stopNote()(note);
       };
 
+      vm.notesDown = function(notes) {
+        notes.forEach(function(v) {
+          vm.playNote()(v);
+        });
+      };
+
+      vm.notesUp = function(notes) {
+        notes.forEach(function(v) {
+          vm.stopNote()(v);
+        });
+      };
+
+      vm.mouseOver = function(e, note) {
+        // Send noteDown if only the left mouse button is held.
+        if (e.buttons === 1) {
+          return vm.noteDown(note);
+        }
+      };
+
+      vm.touchmove = function(e) {
+        vm.touchesToNotes(e.touches);
+      };
+
+      vm.touchStart = function(e) {
+        vm.touchesToNotes(e.touches);
+      };
+
+      vm.touchEnd = function(e) {
+        vm.touchesToNotes(e.touches);
+      };
+
+      vm.touchesToNotes = function(touches) {
+        var touchNotes = [];
+        _.forEach(touches, function(v) {
+          var targetElement = document.elementFromPoint(v.clientX, v.clientY);
+          if (targetElement !== null) {
+            touchNotes.push({key: targetElement.id});
+          }
+        });
+
+        vm.syncNotesPlaying(touchNotes);
+
+        vm.notesPlaying = touchNotes;
+      };
+
+      vm.syncNotesPlaying = function(notes) {
+        var partitionedNotes = _.partition(notes, function(v) {
+          return _.some(vm.notesPlaying, v);
+        });
+        var keyMap = function(v) {
+          return v.key;
+        };
+        var flatNotesPlaying = _.map(vm.notesPlaying, keyMap);
+        var flatTouchNotes = _.map(notes, keyMap);
+
+        var newNotes = _.difference(flatTouchNotes, flatNotesPlaying);
+        var oldNotes = _.difference(flatNotesPlaying, flatTouchNotes);
+
+        $log.log(newNotes, oldNotes);
+
+        vm.notesDown(newNotes);
+        vm.notesUp(oldNotes);
+      };
+
+      $scope.$watch('vm.baseOctave', vm.generateKeyboardNotes);
+
       activate();
 
       function activate() {
@@ -576,6 +646,91 @@
     }
   }
 
+})();
+
+(function() {
+  'use strict';
+
+  angular
+    .module('transpositron')
+    .directive('tnTouchmove', tnTouchMove)
+    .directive('tnTouchstart', tnTouchStart)
+    .directive('tnTouchend', tnTouchEnd);
+
+  /** @ngInject */
+  function tnTouchMove() {
+    var directive = {
+      restrict: 'A',
+      controller: TnTouchMoveController
+    };
+
+    return directive;
+
+    function TnTouchMoveController($scope, $element) {
+      $element.bind("touchstart", onTouchStart);
+
+      function onTouchStart(event) {
+        event.preventDefault();
+        $element.bind("touchmove", onTouchMove);
+        $element.bind("touchend", onTouchEnd);
+      }
+
+      function onTouchMove(event) {
+        var method = $element.attr("tn-touchmove");
+        $scope.$event = event;
+        $scope.$apply(method);
+      }
+
+      function onTouchEnd(event) {
+        event.preventDefault();
+        $element.unbind("touchmove", onTouchMove);
+        $element.unbind("touchend", onTouchEnd);
+      }
+
+    }
+  }
+
+  /** @ngInject */
+  function tnTouchStart() {
+    var directive = {
+      restrict: 'A',
+      controller: TnTouchStartController
+    };
+
+    return directive;
+
+    function TnTouchStartController($scope, $element) {
+      $element.bind('touchstart', onTouchStart);
+
+      function onTouchStart(event) {
+        event.preventDefault();
+        var method = $element.attr('tn-touchstart');
+        $scope.$event = event;
+        $scope.$apply(method);
+      }
+    }
+  }
+
+  /** @ngInject */
+  function tnTouchEnd() {
+    var directive = {
+      restrict: 'A',
+      controller: TnTouchEndController
+    };
+
+    return directive;
+
+    function TnTouchEndController($scope, $element) {
+      $element.bind('touchend', onTouchEnd);
+
+      function onTouchEnd(event) {
+        event.preventDefault();
+        var method = $element.attr('tn-touchend');
+        $scope.$event = event;
+        $scope.$apply(method);
+      }
+    }
+  }
 })();
 
 (function() {
@@ -751,6 +906,10 @@
     };
 
     this.startNote = function(note) {
+      if (!note || !!this._playing[note]) {
+        return;
+      }
+
       var oscObj = this.buildOscillatorObject(note);
       var time = audioContext.currentTime;
       var a = this.envelopeDefs.a;
@@ -764,6 +923,10 @@
     };
 
     this.endNote = function(note) {
+      if (!note) {
+        return;
+      }
+
       var oscObj = _.get(this._playing, note, false);
       var time = audioContext.currentTime;
       var r = this.envelopeDefs.r;
@@ -776,10 +939,10 @@
     };
 
     this.clean = function() {
-      
+
     };
   }
 })();
 
-angular.module("transpositron").run(["$templateCache", function($templateCache) {$templateCache.put("app/components/tn-keyboard/tn-keyboard.html","<div flex=\"\" layout=\"row\"><div flex=\"\" ng-repeat=\"key in vm.keyboardNotes\" class=\"piano-key\" ng-class=\"{\'black-key\': key.type, hide: $index >= 12, \'show-gt-xs\': $index >= 12 && $index < 24, \'show-gt-md\': $index >= 24, \'note-down\': vm.isBeingPlayed(key.label)}\"><div class=\"inner\" ng-mousedown=\"vm.noteDown(key.label)\" ng-mouseup=\"vm.noteUp(key.label)\" ng-mouseout=\"vm.noteUp(key.label)\">{{key.label}}</div></div></div>");
-$templateCache.put("app/components/navbar/navbar.html","<md-toolbar layout=\"row\" layout-align=\"center center\"><md-button href=\"/\">Transpositron</md-button><section flex=\"\" layout=\"row\" layout-align=\"left center\"><md-button href=\"#/\" class=\"md-raised\">Home</md-button><md-button href=\"#/about/\" class=\"md-raised\">About</md-button></section><md-button hide=\"\" show-gt-sm=\"\" class=\"acme-navbar-text\">Application was created {{ vm.relativeDate }}.</md-button></md-toolbar>");}]);
+angular.module("transpositron").run(["$templateCache", function($templateCache) {$templateCache.put("app/components/navbar/navbar.html","<md-toolbar layout=\"row\" layout-align=\"center center\"><md-button href=\"/\">Transpositron</md-button><section flex=\"\" layout=\"row\" layout-align=\"left center\"><md-button href=\"#/\" class=\"md-raised\">Home</md-button><md-button href=\"#/about/\" class=\"md-raised\">About</md-button></section><md-button hide=\"\" show-gt-sm=\"\" class=\"acme-navbar-text\">Application was created {{ vm.relativeDate }}.</md-button></md-toolbar>");
+$templateCache.put("app/components/tn-keyboard/tn-keyboard.html","<div flex=\"\" layout=\"row\" tn-touchmove=\"vm.touchmove($event)\"><div flex=\"\" ng-repeat=\"key in vm.keyboardNotes\" class=\"piano-key\" ng-class=\"{\'black-key\': key.type, hide: $index >= 12, \'show-gt-xs\': $index >= 12 && $index < 24, \'show-gt-md\': $index >= 24, \'note-down\': vm.isBeingPlayed(key.label)}\"><div id=\"{{key.label}}\" class=\"inner\" ng-mousedown=\"vm.noteDown(key.label)\" ng-mouseup=\"vm.noteUp(key.label)\" ng-mouseout=\"vm.noteUp(key.label)\" ng-mouseover=\"vm.mouseOver($event, key.label)\" tn-touchstart=\"vm.touchStart($event)\" tn-touchend=\"vm.touchEnd($event)\">{{key.label}}</div></div></div>");}]);
