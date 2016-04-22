@@ -101,12 +101,10 @@
       };
 
       vm.syncNotesPlaying = function(notes) {
-        var partitionedNotes = _.partition(notes, function(v) {
-          return _.some(vm.notesPlaying, v);
-        });
         var keyMap = function(v) {
           return v.key;
         };
+        
         var flatNotesPlaying = _.map(vm.notesPlaying, keyMap);
         var flatTouchNotes = _.map(notes, keyMap);
 
