@@ -18,6 +18,7 @@
           scale: '=',
           baseKeyOffset: '=',
           baseOctave: '=',
+          keyNoteMap: '=',
           playNote: '&',
           stopNote: '&'
       }
@@ -31,14 +32,21 @@
 
       vm.keyPattern = [0,1,0,1,0,0,1,0,1,0,1,0];
       vm.keyboardNotes = [];
+      vm.activeNotes = [];
 
       vm.generateKeyboardNotes = function() {
         var j = 0;
+        var note;
+        vm.activeNotes = _.values(vm.keyNoteMap);
+
         for (var i = vm.baseOctave * 12; i < (vm.baseOctave + 3) * 12; i++) {
+          note = webAudioPlayer.noteList[i];
           vm.keyboardNotes[j] = {
-            label: webAudioPlayer.noteList[i],
-            type: vm.keyPattern[i % 12]
+            label: note,
+            type: vm.keyPattern[i % 12],
+            active: vm.activeNotes.indexOf(note) !== -1
           };
+
           j++;
         }
       };
@@ -48,11 +56,15 @@
       };
 
       vm.noteDown = function(note) {
-        vm.playNote()(note);
+        if (vm.activeNotes.indexOf(note) !== -1) {
+          vm.playNote()(note);
+        }
       };
 
       vm.noteUp = function(note) {
-        vm.stopNote()(note);
+        if (vm.activeNotes.indexOf(note) !== -1) {
+          vm.stopNote()(note);
+        }
       };
 
       vm.notesDown = function(notes) {
