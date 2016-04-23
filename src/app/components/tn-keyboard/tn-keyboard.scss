@@ -4,15 +4,20 @@ $layout-breakpoint-md:     1280px !default;
 $layout-breakpoint-lg:     1920px !default;
 $keyHeight: 25vh;
 $bkWidth: 4vw;
+$wkColorStop0: hsla(0,0%,100%,1);
+$wkColorStop1: hsla(0,0%,95%,1);
+$wkColorStop2: hsla(0,0%,88%,1);
+$wkColorStop3: hsla(0,0%,96%,1);
 
 .piano-key {
-  background-image: linear-gradient(175deg, hsla(0,0%,100%,1) 0%,hsla(0,0%,95%,1) 50%,hsla(0,0%,88%,1) 51%,hsla(0,0%,96%,1) 100%);
+  background-image: linear-gradient(175deg, $wkColorStop0 0%, $wkColorStop1 50%, $wkColorStop2 51%, $wkColorStop3 100%);
   box-shadow: inset 0 -5px 5px hsla(0, 0, 0, 0.8);
   transition: background-position 0.2s ease-out, box-shadow 0.2s ease-out;
   background-position: 0 0;
   background-size: auto 200%;
   cursor: default;
   user-select: none;
+  box-sizing: border-box;
 
   .inner {
     color: hsl(0, 0, 50);
@@ -25,11 +30,32 @@ $bkWidth: 4vw;
     box-shadow: inset 0 -8px 5px hsla(0, 0, 0, 0.8);
     background-position: 0 100%;
   }
+
+  &.disabled {
+    $hueAmt: 220;
+    $saturationAmt: 10%;
+    $lightnessAmt: -30%;
+    background-image: linear-gradient(175deg, adjust-color($wkColorStop0, $hue: $hueAmt, $saturation: $saturationAmt, $lightness: $lightnessAmt) 0%,
+      adjust-color($wkColorStop1, $hue: $hueAmt, $saturation: $saturationAmt, $lightness: $lightnessAmt) 50%,
+      adjust-color($wkColorStop2, $hue: $hueAmt, $saturation: $saturationAmt, $lightness: $lightnessAmt) 51%,
+      adjust-color($wkColorStop3, $hue: $hueAmt, $saturation: $saturationAmt, $lightness: $lightnessAmt) 100%);
+    .inner {
+      // border: 4px dashed hsl(220, 30, 50);
+    }
+  }
 }
 
 .black-key {
   flex: 0;
   position: relative;
+
+  &.disabled {
+    .inner {
+      // border: 4px dashed hsl(220, 30, 50);
+      border-top: none;
+      background-image: linear-gradient(175deg, hsla(220,10%,27%,1) 0%,hsla(220,10%,31%,1) 9%,hsla(220,10%,37%,1) 24%,hsla(220,10%,27%,1) 40%,hsla(220,10%,20%,1) 49%,hsla(220,10%,37%,1) 50%,hsla(220,10%,48%,1) 61%,hsla(220,10%,60%,1) 75%,hsla(220,10%,55%,1) 88%,hsla(220,10%,50%,1) 100%);
+    }
+  }
 
   .inner {
     background-image: linear-gradient(175deg, hsla(0,0%,7%,1) 0%,hsla(0,0%,11%,1) 9%,hsla(0,0%,17%,1) 24%,hsla(0,0%,7%,1) 40%,hsla(0,0%,0%,1) 49%,hsla(0,0%,17%,1) 50%,hsla(0,0%,28%,1) 61%,hsla(0,0%,40%,1) 75%,hsla(0,0%,35%,1) 88%,hsla(0,0%,30%,1) 100%);
@@ -42,6 +68,7 @@ $bkWidth: 4vw;
     position: absolute;
     left: -$bkWidth * 0.8;
     border-radius: 0 0 1vw 1vw;
+
 
     @media(min-width: $layout-breakpoint-xs) {
       width: $bkWidth;
