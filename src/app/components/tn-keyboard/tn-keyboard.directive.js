@@ -129,7 +129,7 @@
         vm.notesUp(oldNotes);
       };
 
-      $scope.$watch('vm.baseOctave', vm.generateKeyboardNotes);
+      $scope.$watchGroup(['vm.baseOctave', 'vm.scale', 'vm.baseKeyOffset'], vm.generateKeyboardNotes);
 
       activate();
 
