@@ -69,13 +69,13 @@
 
       vm.notesDown = function(notes) {
         notes.forEach(function(v) {
-          vm.playNote()(v);
+          vm.noteDown(v);
         });
       };
 
       vm.notesUp = function(notes) {
         notes.forEach(function(v) {
-          vm.stopNote()(v);
+          vm.noteUp(v);
         });
       };
 
@@ -109,14 +109,14 @@
 
         vm.syncNotesPlaying(touchNotes);
 
-        vm.notesPlaying = touchNotes;
+        // vm.notesPlaying = touchNotes;
       };
 
       vm.syncNotesPlaying = function(notes) {
         var keyMap = function(v) {
           return v.key;
         };
-        
+
         var flatNotesPlaying = _.map(vm.notesPlaying, keyMap);
         var flatTouchNotes = _.map(notes, keyMap);
 
