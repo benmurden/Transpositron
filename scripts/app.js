@@ -85,6 +85,7 @@
     vm.baseKeyOffset = 0;
     vm.keyNoteMap = {};
     vm.notesPlaying = [];
+    vm.waveform = '11_TB303_Square';
 
     vm.mapKeysToNotes = function() {
       var scalePosition = 0;
@@ -151,6 +152,7 @@
 
     function activate() {
       vm.mapKeysToNotes();
+      vm.setWaveform();
       $timeout(function() {
         vm.classAnimation = 'rubberBand';
       }, 4000);
@@ -194,6 +196,14 @@
         value: '12414'
       },
       {
+        name: 'Blues (Hexatonic Major)',
+        value: '211323'
+      },
+      {
+        name: 'Blues (Hexatonic Minor)',
+        value: '321132'
+      },
+      {
         name: 'Byzantine',
         value: '1312131'
       },
@@ -216,6 +226,10 @@
       {
         name: 'Locrian',
         value: '1221222'
+      },
+      {
+        name: 'Major Pentatonic',
+        value: '22323'
       },
       {
         name: 'Chinese',
