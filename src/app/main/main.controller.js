@@ -131,6 +131,14 @@
         value: '12414'
       },
       {
+        name: 'Blues (Hexatonic Major)',
+        value: '211323'
+      },
+      {
+        name: 'Blues (Hexatonic Minor)',
+        value: '321132'
+      },
+      {
         name: 'Byzantine',
         value: '1312131'
       },
