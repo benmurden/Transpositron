@@ -30,7 +30,7 @@
           </p>
         </section>
 
-        <tn-keyboard flex notes-playing="main.notesPlaying" scale="main.scale" natural-key="main.baseKeyOffset" base-octave="main.baseOctave" base-key-offset="main.baseKeyOffset" key-note-map="main.keyNoteMap" play-note="main.noteOn" stop-note="main.noteOff"></tn-keyboard>
+        <tn-keyboard flex notes-playing="main.notesPlaying" scale="main.scale" natural-key="main.baseKeyOffset" base-octave="main.baseOctave" base-key-offset="main.baseKeyOffset" key-note-map="main.keyNoteMap" use-scale="main.useScale" play-note="main.noteOn" stop-note="main.noteOff"></tn-keyboard>
 
         <div flex layout-gt-sm="row" layout-sm="column" layout-align="center">
           <div flex="33" flex-sm="100">
@@ -93,6 +93,9 @@
             <md-card>
               <md-card-content>
                 <h3>Scale settings</h3>
+                <div layout="row">
+                  <md-checkbox ng-model="main.useScale" ng-change="main.mapKeysToNotes()" aria-label="Enable scale">Enable scale</md-checkbox>
+                </div>
                 <div layout="row">
                   <md-input-container flex="30" layout>
                     <label>Base Octave</label>

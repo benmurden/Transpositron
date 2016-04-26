@@ -86,13 +86,19 @@
     vm.keyNoteMap = {};
     vm.notesPlaying = [];
     vm.waveform = '11_TB303_Square';
+    vm.useScale = true;
 
     vm.mapKeysToNotes = function() {
       var scalePosition = 0;
+      var scale = vm.scale;
+
+      if (!vm.useScale) {
+        scale = [1];
+      }
 
       vm.keySequence.forEach(function(v, i) {
         vm.keyNoteMap[v] = webAudioPlayer.noteList[(vm.baseOctave * 12) + scalePosition + parseInt(vm.baseKeyOffset)];
-        scalePosition += parseInt(vm.scale[i % vm.scale.length]);
+        scalePosition += parseInt(scale[i % scale.length]);
       });
     };
 
@@ -552,6 +558,7 @@
           baseKeyOffset: '=',
           baseOctave: '=',
           keyNoteMap: '=',
+          useScale: '=',
           playNote: '&',
           stopNote: '&'
       }
@@ -662,7 +669,7 @@
         vm.notesUp(oldNotes);
       };
 
-      $scope.$watchGroup(['vm.baseOctave', 'vm.scale', 'vm.baseKeyOffset'], vm.generateKeyboardNotes);
+      $scope.$watchGroup(['vm.baseOctave', 'vm.scale', 'vm.baseKeyOffset', 'vm.useScale'], vm.generateKeyboardNotes);
 
       activate();
 
