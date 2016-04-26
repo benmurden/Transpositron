@@ -19,6 +19,7 @@
           baseKeyOffset: '=',
           baseOctave: '=',
           keyNoteMap: '=',
+          useScale: '=',
           playNote: '&',
           stopNote: '&'
       }
@@ -129,7 +130,7 @@
         vm.notesUp(oldNotes);
       };
 
-      $scope.$watchGroup(['vm.baseOctave', 'vm.scale', 'vm.baseKeyOffset'], vm.generateKeyboardNotes);
+      $scope.$watchGroup(['vm.baseOctave', 'vm.scale', 'vm.baseKeyOffset', 'vm.useScale'], vm.generateKeyboardNotes);
 
       activate();
 
