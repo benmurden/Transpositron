@@ -5,6 +5,8 @@
 // bower:scss
 // endbower
 
+@import 'variables';
+
 @import url(http://fonts.googleapis.com/css?family=Roboto+Slab:400,700|Roboto:400,700,700italic,400italic);
 
 html {
@@ -43,7 +45,12 @@ section.jumbotron {
   color: white;
 
   h1 {
-    font-size: 3em;
+    $h1Size: 3em;
+    font-size: $h1Size * 0.8;
+
+    @media (min-width: $layout-breakpoint-xs) {
+      font-size: $h1Size;
+    }
   }
 }
 
