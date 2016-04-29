@@ -28,7 +28,9 @@
         controllerAs: 'home'
       })
       .when('/about/', {
-        templateUrl: 'app/about/about.html'
+        templateUrl: 'app/about/about.html',
+        controller: 'AboutController',
+        controllerAs: 'about'
       });
 
     $locationProvider.html5Mode(true);

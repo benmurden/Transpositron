@@ -2,6 +2,16 @@ section.jumbotron
   h1 Transpositron
   p A Web Audio API project by Benjamin Murden
   
-div(flex, layout='row', layout-align='center')
-  div(flex='33')
+div(flex layout='row' layout-align='center')
+  .about-text
     p Using Angular.js, Material Design, and of course, Web Audio API.
+    
+.techs(flex layout-gt-sm='row' layout='column' layout-wrap layout-align='center')
+  md-card(flex='30' flex-sm='100' ng-repeat="tech in about.techs | orderBy:'rank'")
+    .thumbnail
+      img.pull-right(ng-src="assets/images/{{ tech.logo }}" alt="{{ tech.title }}")
+      .caption
+        h3= "{{ tech.title }}"
+        p= "{{ tech.description }}"
+        p
+          a(ng-href="{{ tech.url }}")= "{{ tech.url }}"
