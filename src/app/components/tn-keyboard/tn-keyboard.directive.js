@@ -20,6 +20,7 @@
           baseOctave: '=',
           keyNoteMap: '=',
           useScale: '=',
+          showKeys: '=',
           playNote: '&',
           stopNote: '&'
       }

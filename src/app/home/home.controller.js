@@ -21,6 +21,7 @@
     vm.notesPlaying = [];
     vm.waveform = '11_TB303_Square';
     vm.useScale = true;
+    vm.showKeys = true;
 
     vm.mapKeysToNotes = function() {
       var scalePosition = 0;
@@ -59,6 +60,8 @@
       if (e.ctrlKey || e.altKey) {
         return true;
       }
+
+      vm.showKeys = true;
 
       if (sequenceIndex !== -1 && vm.keyNoteMap[key]) {
         $log.log(e.keyCode, vm.keyNoteMap[key]);
