@@ -21,6 +21,7 @@
           keyNoteMap: '=',
           useScale: '=',
           showKeys: '=',
+          keySequence: '=',
           playNote: '&',
           stopNote: '&'
       }
@@ -39,12 +40,14 @@
       vm.generateKeyboardNotes = function() {
         var j = 0;
         var note;
+        var noteKeyMap = _.invert(vm.keyNoteMap);
         vm.activeNotes = _.values(vm.keyNoteMap);
 
         for (var i = vm.baseOctave * 12; i < (vm.baseOctave + 3) * 12; i++) {
           note = webAudioPlayer.noteList[i];
           vm.keyboardNotes[j] = {
             label: note,
+            keyLabel: noteKeyMap[note],
             type: vm.keyPattern[i % 12],
             active: vm.activeNotes.indexOf(note) !== -1
           };

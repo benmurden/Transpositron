@@ -14,13 +14,17 @@ $wkColorStop3: hsla(0,0%,96%,1);
   background-size: auto 200%;
   cursor: default;
   user-select: none;
-  box-sizing: border-box;
+  position: relative;
 
   .inner {
     color: hsl(0, 0, 50);
     text-align: center;
     padding-top: $keyHeight;
     padding-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
   }
 
   &.note-down {
@@ -42,9 +46,20 @@ $wkColorStop3: hsla(0,0%,96%,1);
   }
 }
 
+.key-label {
+  position: absolute;
+  bottom: 30px;
+  text-align: center;
+  width: 70%;
+  margin-left: -20%;
+  transform: translateX(50%);
+  color: $red;
+}
+
 .black-key {
   flex: 0;
   position: relative;
+  z-index: 20;
 
   &.disabled {
     .inner {
@@ -65,7 +80,6 @@ $wkColorStop3: hsla(0,0%,96%,1);
     position: absolute;
     left: -$bkWidth * 0.8;
     border-radius: 0 0 1vw 1vw;
-
 
     @media(min-width: $layout-breakpoint-xs) {
       width: $bkWidth;
