@@ -47,6 +47,7 @@
     "lodash": "~4.10.0",
     "main-bower-files": "~2.11.1",
     "merge-stream": "~1.0.0",
+    "phantomjs-prebuilt": "^2.1.7",
     "require-dir": "~0.3.0",
     "uglify-save-license": "~0.4.1",
     "wiredep": "~4.0.0",
