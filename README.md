@@ -1,4 +1,6 @@
 # Transpositron
+[![Build Status](https://travis-ci.org/benmurden/Transpositron.svg?branch=master)](https://travis-ci.org/benmurden/Transpositron)
+
 A demo of Web Audio API and transposition.
 
 This project uses Angular.js, Material Design, Gulp, SASS, and was generated with Yeoman.
