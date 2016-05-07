@@ -54,6 +54,12 @@ $wkColorStop3: hsla(0,0%,96%,1);
   margin-left: -20%;
   transform: translateX(50%);
   color: $red;
+  opacity: 0;
+  transition: opacity 0.8s;
+
+  &.visible {
+    opacity: 1;
+  }
 }
 
 .black-key {

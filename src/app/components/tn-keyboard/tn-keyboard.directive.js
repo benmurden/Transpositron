@@ -62,6 +62,7 @@
 
       vm.noteDown = function(note) {
         if (vm.activeNotes.indexOf(note) !== -1) {
+          vm.showKeys = false;
           vm.playNote()(note);
         }
       };
