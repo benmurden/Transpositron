@@ -35,7 +35,6 @@
 
     $locationProvider.html5Mode(true);
 
-    window.AudioContext = window.AudioContext || window.webkitAudioContext;
-  }
+    }
 
 })();
