@@ -10,7 +10,7 @@
       inject(function($compile, $rootScope) {
         el = angular.element('<tn-keyboard></tn-keyboard>');
         $compile(el)($rootScope);
-        // $rootScope.$digest();
+        $rootScope.$digest();
 
         controller = el.controller("tnKeyboard");
 
@@ -19,8 +19,7 @@
     });
 
     it('returns false when note is not playing', inject(function() {
-      expect(true).toBe(true);
-      // expect(controller.isBeingPlayed('C3')).toBeFalsy();
+      expect(controller.isBeingPlayed('C3')).toBeFalsy();
     }));
   });
 })();
