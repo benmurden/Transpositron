@@ -21,5 +21,30 @@
     it('returns false when note is not playing', inject(function() {
       expect(controller.isBeingPlayed('C3')).toBeFalsy();
     }));
+
+    it('returns true when note is playing', inject(function() {
+      controller.notesPlaying = [{key: 'C3'}];
+
+      expect(controller.isBeingPlayed('C3')).toBeTruthy();
+    }));
+
+    it('plays note when active', inject(function() {
+      var callArgs;
+
+      spyOn(controller, 'playNote').and.callFake(function() {
+        return function() {callArgs = Array.prototype.slice.call(arguments);};
+      });
+      controller.activeNotes = ['C3'];
+      controller.noteDown('C3');
+
+      expect(callArgs).toEqual(['C3']);
+    }));
+
+    it('does not play note when inactive', inject(function() {
+      spyOn(controller, 'playNote');
+      controller.noteDown('C3');
+
+      expect(controller.playNote.calls.any()).toEqual(false);
+    }));
   });
 })();
