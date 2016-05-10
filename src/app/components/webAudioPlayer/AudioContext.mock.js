@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  var AnalyserNode, AudioBuffer, AudioBufferSourceNode, AudioContext, AudioDestinationNode, AudioListener, AudioNode, AudioParam, AudioSourceNode, BiquadFilterNode, ChannelMergerNode, ChannelSplitterNode, ConvolverNode, DelayNode, DynamicsCompressorNode, GainNode, JavaScriptNode, MediaElementAudioSourceNode, MediaStreamAudioSourceNode, OscillatorNode, PannerNode, ScriptProcessorNode, WaveShaperNode, WaveTable,
+  var AnalyserNode, AudioBuffer, AudioBufferSourceNode, AudioContext, AudioDestinationNode, AudioListener, AudioNode, AudioParam, AudioSourceNode, BiquadFilterNode, ChannelMergerNode, ChannelSplitterNode, ConvolverNode, DelayNode, DynamicsCompressorNode, AudioGain, GainNode, JavaScriptNode, MediaElementAudioSourceNode, MediaStreamAudioSourceNode, OscillatorNode, PannerNode, ScriptProcessorNode, WaveShaperNode, WaveTable,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) { child[key] = parent[key]; } } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
 
@@ -86,7 +86,7 @@
       this.mediaElement = mediaElement1;
       type = (ref = this.mediaElement) !== null ? (ref1 = ref.constructor) !== null ? ref1.name : void 0 : void 0;
       if (type !== 'HTMLAudioElement' || type !== 'HTMLVideoElement' || type !== 'HTMLMediaElement') {
-        console.log('error');
+        throw new Error('Invalid MediaElement type.');
       }
     }
 
@@ -160,21 +160,22 @@
 
   })(AudioNode);
 
+  AudioGain = (function(superClass) {
+    extend(AudioGain, superClass);
+
+    function AudioGain() {
+      return AudioGain.__super__.constructor.apply(this, arguments);
+    }
+
+    return AudioGain;
+
+  })(AudioParam);
+
   GainNode = (function(superClass) {
     extend(GainNode, superClass);
 
     function GainNode() {
-      var AudioGain;
-      this.gain = new (AudioGain = (function(superClass1) {
-        extend(AudioGain, superClass1);
-
-        function AudioGain() {
-          return AudioGain.__super__.constructor.apply(this, arguments);
-        }
-
-        return AudioGain;
-
-      })(AudioParam))();
+      this.gain = new AudioGain();
     }
 
     return GainNode;
