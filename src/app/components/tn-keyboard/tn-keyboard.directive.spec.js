@@ -46,5 +46,24 @@
 
       expect(controller.playNote.calls.any()).toEqual(false);
     }));
+
+    it('stops note when active', inject(function() {
+      var callArgs;
+
+      spyOn(controller, 'stopNote').and.callFake(function() {
+        return function() {callArgs = Array.prototype.slice.call(arguments);};
+      });
+      controller.activeNotes = ['C3'];
+      controller.noteUp('C3');
+
+      expect(callArgs).toEqual(['C3']);
+    }));
+
+    it('does not stop note when inactive', inject(function() {
+      spyOn(controller, 'stopNote');
+      controller.noteUp('C3');
+
+      expect(controller.stopNote.calls.any()).toEqual(false);
+    }));
   });
 })();
