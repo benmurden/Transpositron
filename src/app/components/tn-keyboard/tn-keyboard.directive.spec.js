@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  describe('directives', function(){
+  describe('tn-keyboard directive', function(){
     var el, scope, controller;
 
     beforeEach(function() {
@@ -64,6 +64,16 @@
       controller.noteUp('C3');
 
       expect(controller.stopNote.calls.any()).toEqual(false);
+    }));
+
+    it('can send multiple note events', inject(function() {
+      spyOn(controller, 'noteDown');
+
+      controller.notesDown(['C3', 'E3']);
+
+      expect(controller.noteDown.calls.count()).toEqual(2);
+      expect(controller.noteDown.calls.argsFor(0)).toEqual(['C3']);
+      expect(controller.noteDown.calls.argsFor(1)).toEqual(['E3']);
     }));
   });
 })();
