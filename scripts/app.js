@@ -874,6 +874,50 @@
 
   angular
       .module('transpositron')
+      .service('wavetables', wavetables);
+
+  /** @ngInject */
+  function wavetables($http, $log, $q) {
+    this.getWavetable = function(name) {
+      return $q(function(resolve, reject) {
+        if (!_wavetables[name]) {
+          $http.get('assets/wavetables/' + name + '.json').then(function(result) {
+            var real = new Float32Array(result.data.real);
+            var imag = new Float32Array(result.data.imag);
+
+            _wavetables[name] = {real: real, imag: imag};
+            resolve(_wavetables[name]);
+          }, function(result) {
+            $log.warn('Problem loading wavetable', result);
+            reject(result);
+          });
+        } else {
+          resolve(_wavetables[name]);
+        }
+      });
+    };
+
+    var _wavetables = {};
+    /*
+    // Get a JSON object from chromium wavetables.
+    var a=document.createElement('a');
+    var w=JSON.parse(document.querySelector('pre').textContent.replace(/'/g, '"').replace(/\n/g, "").replace(/,\]/g, "]").replace(/,}/g, "}"));
+    w.name=window.location.pathname.substr(window.location.pathname.lastIndexOf('/')+1);
+    a.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(w)));
+    a.setAttribute('download', w.name + '.json');
+    a.textContent = 'File link';
+    document.body.insertBefore(a, document.querySelector('pre'));
+    a.click();
+    */
+  }
+
+})();
+
+(function() {
+  'use strict';
+
+  angular
+      .module('transpositron')
       .service('webAudioPlayer', webAudioPlayer);
 
   /** @ngInject */
@@ -1034,50 +1078,6 @@
 
     };
   }
-})();
-
-(function() {
-  'use strict';
-
-  angular
-      .module('transpositron')
-      .service('wavetables', wavetables);
-
-  /** @ngInject */
-  function wavetables($http, $log, $q) {
-    this.getWavetable = function(name) {
-      return $q(function(resolve, reject) {
-        if (!_wavetables[name]) {
-          $http.get('assets/wavetables/' + name + '.json').then(function(result) {
-            var real = new Float32Array(result.data.real);
-            var imag = new Float32Array(result.data.imag);
-
-            _wavetables[name] = {real: real, imag: imag};
-            resolve(_wavetables[name]);
-          }, function(result) {
-            $log.warn('Problem loading wavetable', result);
-            reject(result);
-          });
-        } else {
-          resolve(_wavetables[name]);
-        }
-      });
-    };
-
-    var _wavetables = {};
-    /*
-    // Get a JSON object from chromium wavetables.
-    var a=document.createElement('a');
-    var w=JSON.parse(document.querySelector('pre').textContent.replace(/'/g, '"').replace(/\n/g, "").replace(/,\]/g, "]").replace(/,}/g, "}"));
-    w.name=window.location.pathname.substr(window.location.pathname.lastIndexOf('/')+1);
-    a.setAttribute('href', 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(w)));
-    a.setAttribute('download', w.name + '.json');
-    a.textContent = 'File link';
-    document.body.insertBefore(a, document.querySelector('pre'));
-    a.click();
-    */
-  }
-
 })();
 
 angular.module("transpositron").run(["$templateCache", function($templateCache) {$templateCache.put("app/home/home.html","<section class=\"jumbotron\"><h1>Transpositron</h1><p class=\"lead\">Transpose your keyboard and easily play any scale.</p></section><tn-keyboard flex=\"\" notes-playing=\"home.notesPlaying\" scale=\"home.scale\" natural-key=\"home.baseKeyOffset\" base-octave=\"home.baseOctave\" base-key-offset=\"home.baseKeyOffset\" key-note-map=\"home.keyNoteMap\" key-sequence=\"home.keySequence\" use-scale=\"home.useScale\" play-note=\"home.noteOn\" stop-note=\"home.noteOff\" show-keys=\"home.showKeys\"></tn-keyboard><div flex=\"\" layout-gt-sm=\"row\" layout-sm=\"column\" layout-align=\"center\"><div flex=\"33\" flex-sm=\"100\"><md-card><md-card-content><h3>Scale settings</h3><div layout=\"row\"><md-checkbox ng-model=\"home.useScale\" ng-change=\"home.mapKeysToNotes()\" aria-label=\"Enable scale\">Enable scale</md-checkbox></div><div layout=\"row\"><md-input-container flex=\"30\" layout=\"\"><label>Base Octave</label> <input class=\"flex-input\" type=\"number\" ng-model=\"home.baseOctave\" aria-label=\"octave\" aria-controls=\"octave-slider\"></md-input-container><div flex=\"\" layout=\"\" layout-margin=\"\" layout-align=\"center center\"><md-slider flex=\"\" ng-model=\"home.baseOctave\" min=\"0\" max=\"6\" step=\"1\" aria-label=\"octave\" id=\"octave-slider\" ng-change=\"home.mapKeysToNotes()\"></md-slider></div></div><md-input-container><label>Scale</label><md-select ng-model=\"home.scale\" ng-change=\"home.mapKeysToNotes()\" aria-label=\"Scale\" placeholder=\"Scale\"><md-option ng-repeat=\"s in home.scales\" value=\"{{s.value}}\">{{s.name}}</md-option></md-select></md-input-container><md-input-container><label>Key</label><md-select ng-model=\"home.baseKeyOffset\" ng-change=\"home.mapKeysToNotes()\" aria-label=\"Key\" placeholder=\"Key\"><md-option ng-repeat=\"k in home.naturalKeys\" value=\"{{k.value}}\">{{k.name}}</md-option></md-select></md-input-container><div layout=\"row\"><md-input-container flex=\"60\"><label>Custom scale</label> <input class=\"flex-input\" type=\"text\" ng-model=\"home.scale\" aria-label=\"Custom scale\"></md-input-container><md-button flex=\"\" class=\"md-raised\" ng-click=\"home.mapKeysToNotes()\">Set</md-button></div></md-card-content></md-card></div><div flex=\"33\" flex-sm=\"100\"><md-card flex=\"33\" flex-sm=\"100\"><md-card-content><h3>Envelope</h3><div layout=\"\"><md-input-container flex=\"30\" layout=\"\"><label>Attack</label> <input class=\"flex-input\" type=\"number\" ng-model=\"home.ap.envelopeDefs.a\" aria-label=\"attack\" aria-controls=\"attack-slider\"></md-input-container><div flex=\"\" layout=\"\" layout-align=\"center center\"><md-slider flex=\"\" ng-model=\"home.ap.envelopeDefs.a\" min=\"0\" max=\"2\" step=\"0.01\" aria-label=\"attack\" id=\"attack-slider\"></md-slider></div></div><div layout=\"\"><md-input-container flex=\"30\" layout=\"\"><label>Decay</label> <input class=\"flex-input\" type=\"number\" ng-model=\"home.ap.envelopeDefs.d\" aria-label=\"decay\" aria-controls=\"decay-slider\"></md-input-container><div flex=\"\" layout=\"\" layout-align=\"center center\"><md-slider flex=\"\" ng-model=\"home.ap.envelopeDefs.d\" min=\"0\" max=\"2\" step=\"0.01\" aria-label=\"decay\" id=\"decay-slider\"></md-slider></div></div><div layout=\"\"><md-input-container flex=\"30\" layout=\"\"><label>Sustain</label> <input class=\"flex-input\" type=\"number\" ng-model=\"home.ap.envelopeDefs.s\" aria-label=\"sustain\" aria-controls=\"sustain-slider\"></md-input-container><div flex=\"\" layout=\"\" layout-align=\"center center\"><md-slider flex=\"\" ng-model=\"home.ap.envelopeDefs.s\" min=\"0\" max=\"1\" step=\"0.01\" aria-label=\"sustain\" id=\"sustain-slider\"></md-slider></div></div><div layout=\"\"><md-input-container flex=\"30\" layout=\"\"><label>Release</label> <input class=\"flex-input\" type=\"number\" ng-model=\"home.ap.envelopeDefs.r\" aria-label=\"release\" aria-controls=\"release-slider\"></md-input-container><div flex=\"\" layout=\"\" layout-align=\"center center\"><md-slider flex=\"\" ng-model=\"home.ap.envelopeDefs.r\" min=\"0\" max=\"2\" step=\"0.01\" aria-label=\"release\" id=\"release-slider\"></md-slider></div></div></md-card-content></md-card></div><div flex=\"33\" flex-sm=\"100\"><md-card><md-card-content><h3>Wavetable instrument</h3><md-input-container><label>Instrument</label><md-select ng-model=\"home.waveform\" aria-label=\"wavetable instrument\" placeholder=\"wavetable\" ng-change=\"home.setWaveform()\"><md-option ng-repeat=\"wave in home.waveforms\" value=\"{{wave}}\">{{wave}}</md-option></md-select></md-input-container></md-card-content></md-card></div></div>");
