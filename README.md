@@ -10,10 +10,25 @@ Multi-touch devices are fully supported with the displayed piano keyboard, but y
 
 ## Contributing
 Run locally by installing dependencies.
+```
+npm install
+bower install
+```
 
-`npm install`
-`bower install`
+You may also need Gulp installed globally.
+
+`npm install -g gulp`
 
 Then run the Gulp command.
 
 `gulp serve`
+
+### Testing
+
+Run tests with the following command.
+
+`gulp test`
+
+or
+
+`gulp test:auto`
