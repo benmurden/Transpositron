@@ -75,5 +75,48 @@
       expect(controller.noteDown.calls.argsFor(0)).toEqual(['C3']);
       expect(controller.noteDown.calls.argsFor(1)).toEqual(['E3']);
     }));
+
+    it('can send multiple note up events', inject(function() {
+      spyOn(controller, 'noteUp');
+
+      controller.notesUp(['C3', 'E3']);
+
+      expect(controller.noteUp.calls.count()).toEqual(2);
+      expect(controller.noteUp.calls.argsFor(0)).toEqual(['C3']);
+      expect(controller.noteUp.calls.argsFor(1)).toEqual(['E3']);
+    }));
+
+    it('sends note down when mouse button held', inject(function() {
+      spyOn(controller, 'noteDown');
+
+      controller.mouseOver({buttons: 1}, 'C3');
+
+      expect(controller.noteDown.calls.count()).toEqual(1);
+    }));
+
+    it('does not send note when mouse button is not held', inject(function() {
+      spyOn(controller, 'noteDown');
+
+      controller.mouseOver({buttons: 0}, 'C3');
+
+      expect(controller.noteDown.calls.count()).toEqual(0);
+    }));
+
+    it('handles all touch events', inject(function() {
+      var touchEvent = {touches: [{clientX: 0, clientY: 0}]};
+
+      spyOn(controller, 'touchesToNotes');
+      controller.touchmove(touchEvent);
+
+      expect(controller.touchesToNotes.calls.count()).toEqual(1);
+
+      controller.touchStart(touchEvent);
+
+      expect(controller.touchesToNotes.calls.count()).toEqual(2);
+
+      controller.touchEnd(touchEvent);
+
+      expect(controller.touchesToNotes.calls.count()).toEqual(3);
+    }));
   });
 })();
