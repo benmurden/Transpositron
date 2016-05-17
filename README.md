@@ -15,9 +15,9 @@ npm install
 bower install
 ```
 
-You may also need Gulp installed globally.
+You may also need the Gulp CLI installed globally.
 
-`npm install -g gulp`
+`npm install -g gulp-cli`
 
 Then run the Gulp command.
 
