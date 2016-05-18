@@ -118,5 +118,61 @@
 
       expect(controller.touchesToNotes.calls.count()).toEqual(3);
     }));
+
+    it('converts touch to element id', inject(function() {
+      var touches = [{clientX: 0, clientY: 0}],
+          mockElement = {id: 'mock'};
+
+      spyOn(controller, 'syncNotesPlaying');
+      spyOn(document, 'elementFromPoint').and.returnValue(mockElement);
+
+      controller.touchesToNotes(touches);
+
+      expect(controller.syncNotesPlaying.calls.argsFor(0)).toEqual([[{key: 'mock'}]]);
+    }));
+
+    it('touchesToNotes ignores null elements', inject(function() {
+      var touches = [{clientX: 0, clientY: 0}],
+          mockElement = null;
+
+      spyOn(controller, 'syncNotesPlaying');
+      spyOn(document, 'elementFromPoint').and.returnValue(mockElement);
+
+      controller.touchesToNotes(touches);
+
+      expect(controller.syncNotesPlaying.calls.argsFor(0)).toEqual([[]]);
+    }));
+
+    it('syncs new notes', inject(function() {
+      spyOn(controller, 'notesDown');
+      spyOn(controller, 'notesUp');
+
+      controller.syncNotesPlaying([{key: 'C3'}]);
+
+      expect(controller.notesDown.calls.argsFor(0)).toEqual([['C3']]);
+      expect(controller.notesUp.calls.argsFor(0)).toEqual([[]]);
+    }));
+
+    it('syncs old notes', inject(function() {
+      controller.notesPlaying = [{key: 'C3'}];
+      spyOn(controller, 'notesDown');
+      spyOn(controller, 'notesUp');
+
+      controller.syncNotesPlaying([]);
+
+      expect(controller.notesDown.calls.argsFor(0)).toEqual([[]]);
+      expect(controller.notesUp.calls.argsFor(0)).toEqual([['C3']]);
+    }));
+
+    it('handles combined note sync events', inject(function() {
+      controller.notesPlaying = [{key: 'C3'}, {key: 'E3'}];
+      spyOn(controller, 'notesDown');
+      spyOn(controller, 'notesUp');
+
+      controller.syncNotesPlaying([{key: 'A3'}, {key: 'E3'}]);
+
+      expect(controller.notesDown.calls.argsFor(0)).toEqual([['A3']]);
+      expect(controller.notesUp.calls.argsFor(0)).toEqual([['C3']]);
+    }));
   });
 })();
