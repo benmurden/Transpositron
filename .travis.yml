@@ -14,15 +14,6 @@ node_js:
 before_script:
   - npm install -g gulp
   - npm install -g bower
-  - npm install -g codeclimate-test-reporter
   - bower install
 
 script: gulp test
-
-addons:
-    code_climate:
-        repo_token:
-            secure: ""
-
-after_script:
-  - codeclimate-test-reporter < coverage/lcov.info
