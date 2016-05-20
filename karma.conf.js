@@ -48,11 +48,20 @@ module.exports = function(config) {
       'karma-phantomjs-launcher',
       'karma-angular-filesort',
       'karma-jasmine',
-      'karma-ng-html2js-preprocessor'
+      'karma-ng-html2js-preprocessor',
+      'karma-coverage'
     ],
 
+    reporters: ['progress', 'coverage'],
+
     preprocessors: {
-      'src/**/*.html': ['ng-html2js']
+      'src/**/*.html': ['ng-html2js'],
+      'src/**/*.js': ['coverage']
+    },
+
+    coverageReporter: {
+      type: 'lcov',
+      dir: 'coverage/'
     }
   };
 
