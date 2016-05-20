@@ -17,3 +17,10 @@ before_script:
   - bower install
 
 script: gulp test
+
+addons:
+    code_climate:
+        repo_token: none
+
+after_script:
+  - codeclimate-test-reporter < coverage/lcov.info
