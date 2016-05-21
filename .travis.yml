@@ -19,4 +19,4 @@ before_script:
 script: gulp test
 
 after_script:
-  - cat ./coverage/lcov.info | coveralls
+  - cat ./coverage/lcov.info | coveralls && rm -rf ./coverage
