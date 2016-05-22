@@ -1,5 +1,6 @@
 # Transpositron
 [![Build Status](https://travis-ci.org/benmurden/Transpositron.svg?branch=master)](https://travis-ci.org/benmurden/Transpositron)
+[![Code Climate](https://codeclimate.com/github/benmurden/Transpositron/badges/gpa.svg)](https://codeclimate.com/github/benmurden/Transpositron)
 
 A demo of Web Audio API and transposition.
 
