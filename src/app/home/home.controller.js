@@ -96,9 +96,9 @@
     function activate() {
       vm.mapKeysToNotes();
       vm.setWaveform();
-      $timeout(function() {
-        vm.classAnimation = 'rubberBand';
-      }, 4000);
+      // $timeout(function() {
+      //   vm.classAnimation = 'rubberBand';
+      // }, 4000);
 
       var combos = [];
       vm.keySequence.forEach(function(v) {
