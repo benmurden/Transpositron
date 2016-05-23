@@ -119,17 +119,39 @@
       expect(controller.touchesToNotes.calls.count()).toEqual(3);
     }));
 
-    it('converts touch to element id', inject(function() {
-      var touches = [{clientX: 0, clientY: 0}],
-          mockElement = {id: 'mock'};
+    describe('touchesToNotes', function() {
+      var touches, mockElement;
 
-      spyOn(controller, 'syncNotesPlaying');
-      spyOn(document, 'elementFromPoint').and.returnValue(mockElement);
+      beforeEach(function() {
+        touches = [{clientX: 0, clientY: 0}];
+        mockElement = {
+          id: 'mock',
+          getAttribute: function() {return null;}
+        };
 
-      controller.touchesToNotes(touches);
+        spyOn(controller, 'syncNotesPlaying');
+        spyOn(document, 'elementFromPoint').and.returnValue(mockElement);
+      });
 
-      expect(controller.syncNotesPlaying.calls.argsFor(0)).toEqual([[{key: 'mock'}]]);
-    }));
+      it('converts touch to element id', inject(function() {
+        controller.touchesToNotes(touches);
+
+        expect(controller.syncNotesPlaying.calls.argsFor(0)).toEqual([[{key: 'mock'}]]);
+      }));
+
+      it('gets parent element when touch-bubble is used', inject(function() {
+        var mockParentNode = {
+          id: 'parentNode',
+          getAttribute: function() {return null;}
+        };
+
+        mockElement.getAttribute = function() {return '';};
+        mockElement.parentNode = mockParentNode;
+        controller.touchesToNotes(touches);
+
+        expect(controller.syncNotesPlaying.calls.argsFor(0)).toEqual([[{key: 'parentNode'}]]);
+      }));
+    });
 
     it('touchesToNotes ignores null elements', inject(function() {
       var touches = [{clientX: 0, clientY: 0}],
