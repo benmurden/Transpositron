@@ -109,6 +109,13 @@
         _.forEach(touches, function(v) {
           var targetElement = document.elementFromPoint(v.clientX, v.clientY);
           if (targetElement !== null) {
+            var shouldBubble = targetElement.getAttribute('data-touch-bubble');
+
+            while (shouldBubble !== null) {
+              targetElement = targetElement.parentNode;
+              shouldBubble = targetElement.getAttribute('data-touch-bubble');
+            }
+
             touchNotes.push({key: targetElement.id});
           }
         });
