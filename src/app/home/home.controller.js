@@ -6,7 +6,7 @@
     .controller('HomeController', HomeController);
 
   /** @ngInject */
-  function HomeController($scope, $timeout, $log, webAudioPlayer, keypressHelper, wavetables, toastr, _) {
+  function HomeController($scope, $timeout, $log, webAudioPlayer, keypressHelper, toastr, _) {
     var vm = this;
 
     vm.classAnimation = '';
