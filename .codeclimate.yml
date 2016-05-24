@@ -4,10 +4,8 @@ engines:
     enabled: true
     config:
       languages:
-      - javascript
-    exclude_fingerprints:
-    - a9fd3c0ba886e05c4747fe08f28d34c7
-    - b328d170f8ecde6243e2ca8ee261d32b
+        javascript:
+          mass_threshold: 140
   eslint:
     enabled: true
   fixme:
