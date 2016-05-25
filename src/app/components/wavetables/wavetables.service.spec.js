@@ -40,5 +40,21 @@
       $httpBackend.flush();
       expect($log.warn.logs.length).toEqual(1);
     }));
+
+    it('uses cache', inject(function($rootScope) {
+      var result, f32array;
+      f32array = new Float32Array();
+
+      $httpBackend.expectGET(url)
+        .respond({real: [], image: []});
+
+      service.getWavetable('square');
+      $httpBackend.flush();
+
+      service.getWavetable('square').then(function(value) {result = value;});
+      $rootScope.$apply();
+
+      expect(result).toEqual({real: f32array, imag: f32array});
+    }));
   });
 })();
