@@ -9,7 +9,7 @@
     beforeEach(inject(function($compile, $rootScope, $q, _githubContributor_) {
       githubContributor = _githubContributor_;
       deferred = $q.defer();
-      el = angular.element('<acme-malarkey></acme-malarkey>');
+      el = angular.element('<acme-malarkey extra-values="[cheese, toast]"></acme-malarkey>');
 
       deferred.resolve([{login: 'BenMurden'}]);
 
