@@ -117,6 +117,10 @@
       return OscillatorNode.__super__.constructor.apply(this, arguments);
     }
 
+    OscillatorNode.prototype.frequency = {value: undefined};
+
+    OscillatorNode.prototype.setPeriodicWave = function(obj) {return obj;};
+
     return OscillatorNode;
 
   })(AudioSourceNode);
