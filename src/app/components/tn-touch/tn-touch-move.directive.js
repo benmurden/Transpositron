@@ -5,6 +5,7 @@
     .module('transpositron')
     .directive('tnTouchmove', tnTouchMove);
 
+  /** @ngInject */
   function tnTouchMove() {
     var directive = {
       restrict: 'A',
