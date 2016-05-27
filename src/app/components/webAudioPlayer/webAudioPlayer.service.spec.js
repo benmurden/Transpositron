@@ -120,15 +120,28 @@
     });
 
     describe('envelope', function() {
-      it('sets gain values', inject(function() {
-        var gainNode = {
+      var gainNode;
+
+      beforeEach(function() {
+        gainNode = {
           gain: {
             cancelScheduledValues: function() {},
             setValueAtTime: function() {},
             linearRampToValueAtTime: function() {}
           }
         };
+      });
+
+      it('sets gain values', inject(function() {
         service.envelope(gainNode, 0, 1, 1, 1, 1, 1, 1);
+      }));
+
+      it('startEnvelope sets gain values', inject(function() {
+        service.startEnvelope(gainNode, 0, 1, 1, 1, 1);
+      }));
+
+      it('endEnvelope sets gain values', inject(function() {
+        service.endEnvelope(gainNode, 0, 1);
       }));
     });
   });
