@@ -89,5 +89,47 @@
         expect(toastr.warning).toHaveBeenCalled();
       }));
     });
+
+    describe('playNote', function() {
+      it('starts oscillator node', inject(function() {
+        var oscMock, duration, a, d, r;
+        oscMock = {
+          osc: {
+            start: function() {},
+            stop: function() {}
+          },
+          gain: {}
+        };
+        duration = 1;
+        a = service.envelopeDefs.a;
+        d = service.envelopeDefs.d;
+        r = service.envelopeDefs.r;
+
+        spyOn(service, 'buildOscillatorObject').and.returnValue(oscMock);
+        spyOn(service, 'envelope');
+        spyOn(oscMock.osc, 'start');
+        spyOn(oscMock.osc, 'stop');
+
+        service.playNote('C3', duration);
+
+        expect(service.buildOscillatorObject).toHaveBeenCalledWith('C3');
+        expect(service.envelope).toHaveBeenCalled();
+        expect(oscMock.osc.start).toHaveBeenCalled();
+        expect(oscMock.osc.stop).toHaveBeenCalledWith(a + d + duration + r);
+      }));
+    });
+
+    describe('envelope', function() {
+      it('sets gain values', inject(function() {
+        var gainNode = {
+          gain: {
+            cancelScheduledValues: function() {},
+            setValueAtTime: function() {},
+            linearRampToValueAtTime: function() {}
+          }
+        };
+        service.envelope(gainNode, 0, 1, 1, 1, 1, 1, 1);
+      }));
+    });
   });
 })();
