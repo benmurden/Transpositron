@@ -158,9 +158,5 @@
         delete(this._playing[note]);
       }
     };
-
-    this.clean = function() {
-
-    };
   }
 })();
