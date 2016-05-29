@@ -166,6 +166,14 @@
         expect(service.startEnvelope).toHaveBeenCalled();
         expect(oscObj.osc.start).toHaveBeenCalled();
       }));
+
+      it('doesn\'t start if already started', inject(function() {
+        service._playing = {'C3': {}};
+        service.startNote('C3');
+
+        expect(service.startEnvelope).not.toHaveBeenCalled();
+        expect(oscObj.osc.start).not.toHaveBeenCalled();
+      }));
     });
   });
 })();
