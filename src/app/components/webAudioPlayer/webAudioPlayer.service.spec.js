@@ -144,5 +144,28 @@
         service.endEnvelope(gainNode, 0, 1);
       }));
     });
+
+    describe('startNote', function() {
+      var oscObj;
+      beforeEach(function() {
+        oscObj = {
+          osc: {
+            start: function() {}
+          },
+          gain: {}
+        };
+
+        spyOn(service, 'buildOscillatorObject').and.returnValue(oscObj);
+        spyOn(service, 'startEnvelope');
+        spyOn(oscObj.osc, 'start');
+      });
+
+      it('starts oscillator', inject(function() {
+        service.startNote('C3');
+
+        expect(service.startEnvelope).toHaveBeenCalled();
+        expect(oscObj.osc.start).toHaveBeenCalled();
+      }));
+    });
   });
 })();
