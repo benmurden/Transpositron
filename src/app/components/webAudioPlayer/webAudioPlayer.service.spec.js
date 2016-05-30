@@ -147,6 +147,7 @@
 
     describe('startNote', function() {
       var oscObj;
+
       beforeEach(function() {
         oscObj = {
           osc: {
@@ -165,6 +166,7 @@
 
         expect(service.startEnvelope).toHaveBeenCalled();
         expect(oscObj.osc.start).toHaveBeenCalled();
+        expect(service._playing).toEqual({'C3': oscObj});
       }));
 
       it('doesn\'t start if already started', inject(function() {
@@ -173,6 +175,38 @@
 
         expect(service.startEnvelope).not.toHaveBeenCalled();
         expect(oscObj.osc.start).not.toHaveBeenCalled();
+      }));
+    });
+
+    describe('endNote', function() {
+      var oscObj;
+
+      beforeEach(function() {
+        oscObj = {
+          osc: {
+            stop: function() {}
+          },
+          gain: {}
+        };
+
+        spyOn(service, 'endEnvelope');
+        spyOn(oscObj.osc, 'stop');
+      });
+
+      it('stops oscillator when playing', inject(function() {
+        service._playing = {'C3': oscObj};
+        service.endNote('C3');
+
+        expect(service.endEnvelope).toHaveBeenCalled();
+        expect(oscObj.osc.stop).toHaveBeenCalled();
+        expect(service._playing).toEqual({});
+      }));
+
+      it('does nothing when note is not being played', inject(function() {
+        service.endNote('C3');
+
+        expect(service.endEnvelope).not.toHaveBeenCalled();
+        expect(oscObj.osc.stop).not.toHaveBeenCalled();
       }));
     });
   });
