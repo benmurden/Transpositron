@@ -208,6 +208,13 @@
         expect(service.endEnvelope).not.toHaveBeenCalled();
         expect(oscObj.osc.stop).not.toHaveBeenCalled();
       }));
+
+      it('returns when no note supplied', inject(function() {
+        service.endNote();
+
+        expect(service.endEnvelope).not.toHaveBeenCalled();
+        expect(oscObj.osc.stop).not.toHaveBeenCalled();
+      }))
     });
   });
 })();
