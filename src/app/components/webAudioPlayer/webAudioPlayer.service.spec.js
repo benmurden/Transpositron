@@ -214,7 +214,7 @@
 
         expect(service.endEnvelope).not.toHaveBeenCalled();
         expect(oscObj.osc.stop).not.toHaveBeenCalled();
-      }))
+      }));
     });
   });
 })();
