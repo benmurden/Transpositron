@@ -15,14 +15,16 @@
     return directive;
 
     function TnTouchMoveController($scope, $element) {
-      $element.bind("touchmove", onTouchMove);
+      var vm = this;
 
-      function onTouchMove(event) {
+      vm._onTouchMove = function(event) {
         event.preventDefault();
         var method = $element.attr("tn-touchmove");
         $scope.$event = event;
         $scope.$apply(method);
-      }
+      };
+
+      $element.bind("touchmove", vm._onTouchMove);
     }
   }
 })();
