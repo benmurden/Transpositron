@@ -15,14 +15,16 @@
     return directive;
 
     function TnTouchEndController($scope, $element) {
-      $element.bind('touchend', onTouchEnd);
+      var vm = this;
 
-      function onTouchEnd(event) {
+      vm._onTouchEnd = function(event) {
         event.preventDefault();
         var method = $element.attr('tn-touchend');
         $scope.$event = event;
         $scope.$apply(method);
-      }
+      };
+
+      $element.bind('touchend', vm._onTouchEnd);
     }
   }
 })();
