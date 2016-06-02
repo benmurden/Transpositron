@@ -15,14 +15,16 @@
     return directive;
 
     function TnTouchStartController($scope, $element) {
-      $element.bind('touchstart', onTouchStart);
+      var vm = this;
 
-      function onTouchStart(event) {
+      vm._onTouchStart = function(event) {
         event.preventDefault();
         var method = $element.attr('tn-touchstart');
         $scope.$event = event;
         $scope.$apply(method);
-      }
+      };
+
+      $element.bind('touchstart', vm._onTouchStart);
     }
   }
 })();
