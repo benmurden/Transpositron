@@ -53,7 +53,11 @@
       webAudioPlayer.endNote(note);
     };
 
-    vm.keyDown = function(e) {
+    vm.keyDown = function(e, count, duplicate) {
+      if (duplicate) {
+        return true;
+      }
+      
       var key = keypressHelper.convert_key_to_readable(e.keyCode);
       var sequenceIndex = _.indexOf(vm.keySequence, key);
 
@@ -104,14 +108,8 @@
       vm.keySequence.forEach(function(v) {
         combos.push({
           keys: v,
-          on_keydown: function(e, count, duplicate) {
-            if (!duplicate) {
-              return vm.keyDown(e);
-            }
-          },
-          on_keyup: function(e) {
-            return vm.keyUp(e);
-          }
+          on_keydown: vm.keyDown,
+          on_keyup: vm.keyUp
         });
       });
       keypressHelper.listener.register_many(combos);
