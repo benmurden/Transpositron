@@ -26,7 +26,7 @@
 
         vm.mapKeysToNotes();
 
-        expect(vm.keyNoteMap['b']).toEqual('E3');
+        expect(vm.keyNoteMap.b).toEqual('E3');
       }));
     });
 
