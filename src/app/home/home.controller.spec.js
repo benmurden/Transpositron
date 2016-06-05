@@ -72,6 +72,12 @@
         spyOn(vm, 'noteOn');
       });
 
+      it('does nothing when duplicate', inject(function() {
+        vm.keyDown(e, 2, true);
+
+        expect(vm.noteOn).not.toHaveBeenCalled();
+      }));
+
       it('does nothing when keys are not mapped', inject(function() {
         vm.keyDown(e);
 
