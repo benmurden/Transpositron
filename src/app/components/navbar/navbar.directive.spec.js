@@ -2,12 +2,11 @@
   'use strict';
 
   describe('navbar directive', function(){
-    var el, scope, controller, moment, momentObj;
+    var el, scope, controller;
 
     beforeEach(module('transpositron'));
 
-    beforeEach(inject(function($compile, $rootScope, _moment_) {
-      moment = _moment_;
+    beforeEach(inject(function($compile, $rootScope) {
       el = angular.element('<acme-navbar creation-date="creationDate"></acme-navbar>');
 
       $compile(el)($rootScope);
