@@ -20,6 +20,16 @@
       expect(vm.noteOn).toBeDefined();
     }));
 
+    describe('mapKeysToNotes', function() {
+      it('gives all notes when useScale is false', inject(function() {
+        vm.useScale = false;
+
+        vm.mapKeysToNotes();
+
+        expect(vm.keyNoteMap['b']).toEqual('E3');
+      }));
+    });
+
     describe('noteOn', function() {
       beforeEach(function() {
         spyOn(webAudioPlayer, 'startNote');
