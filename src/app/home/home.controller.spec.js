@@ -121,6 +121,14 @@
         expect(vm.noteOff).not.toHaveBeenCalled();
       }));
 
+      it('does nothing when modifier keys held', inject(function() {
+        e.ctrlKey = true;
+
+        vm.keyUp(e);
+
+        expect(vm.noteOff).not.toHaveBeenCalled();
+      }));
+
       it('sends noteOff for mapped key', inject(function() {
         vm.keyNoteMap = {z: 'C3'};
         e.keyCode = 90;
