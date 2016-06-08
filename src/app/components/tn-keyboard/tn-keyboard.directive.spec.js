@@ -8,7 +8,7 @@
       module('transpositron');
 
       inject(function($compile, $rootScope) {
-        el = angular.element('<tn-keyboard></tn-keyboard>');
+        el = angular.element('<tn-keyboard base-octave=3></tn-keyboard>');
         $compile(el)($rootScope);
         $rootScope.$digest();
 
