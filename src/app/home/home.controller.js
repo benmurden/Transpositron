@@ -57,7 +57,7 @@
       if (duplicate) {
         return true;
       }
-      
+
       var key = keypressHelper.convert_key_to_readable(e.keyCode);
       var sequenceIndex = _.indexOf(vm.keySequence, key);
 
@@ -175,6 +175,10 @@
       {
         name: 'Chinese',
         value: '42141'
+      },
+      {
+        name: 'Chinese Mongolian',
+        value: '22323'
       },
       {
         name: 'Japanese A',
