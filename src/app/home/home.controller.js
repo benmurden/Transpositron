@@ -149,6 +149,10 @@
         value: '1312131'
       },
       {
+        name: 'Diminished',
+        value: '21212121'
+      },
+      {
         name: 'Egyptian',
         value: '23232'
       },
