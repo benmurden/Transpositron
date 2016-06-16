@@ -161,6 +161,10 @@
         value: '23232'
       },
       {
+        name: 'Ethiopian (A raray)',
+        value: '2212221'
+      },
+      {
         name: 'Harmonic Minor',
         value: '21222131',
       },
