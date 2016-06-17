@@ -165,6 +165,10 @@
         value: '2212221'
       },
       {
+        name: 'Ethiopian (Geez & Ezel)',
+        value: '2122122'
+      },
+      {
         name: 'Harmonic Minor',
         value: '21222131',
       },
