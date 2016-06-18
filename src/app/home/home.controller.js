@@ -173,6 +173,10 @@
         value: '21222131',
       },
       {
+        name: 'Hawaiian',
+        value: '2122221'
+      },
+      {
         name: 'Major',
         value: '2212221'
       },
