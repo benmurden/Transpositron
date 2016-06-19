@@ -177,6 +177,10 @@
         value: '2122221'
       },
       {
+        name: 'Hindustan',
+        value: '2212122'
+      },
+      {
         name: 'Major',
         value: '2212221'
       },
