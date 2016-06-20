@@ -181,6 +181,10 @@
         value: '2212122'
       },
       {
+        name: 'Hungarian Major',
+        value: '3121212'
+      },
+      {
         name: 'Major',
         value: '2212221'
       },
