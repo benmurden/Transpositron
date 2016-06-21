@@ -185,6 +185,10 @@
         value: '3121212'
       },
       {
+        name: 'Hungarian Gypsy',
+        value: '2131131'
+      },
+      {
         name: 'Major',
         value: '2212221'
       },
