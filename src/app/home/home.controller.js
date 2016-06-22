@@ -189,6 +189,10 @@
         value: '2131131'
       },
       {
+        name: 'Hungarian Gypsy Persian',
+        value: '1312131'
+      },
+      {
         name: 'Major',
         value: '2212221'
       },
