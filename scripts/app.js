@@ -200,7 +200,11 @@
       webAudioPlayer.endNote(note);
     };
 
-    vm.keyDown = function(e) {
+    vm.keyDown = function(e, count, duplicate) {
+      if (duplicate) {
+        return true;
+      }
+
       var key = keypressHelper.convert_key_to_readable(e.keyCode);
       var sequenceIndex = _.indexOf(vm.keySequence, key);
 
@@ -251,14 +255,8 @@
       vm.keySequence.forEach(function(v) {
         combos.push({
           keys: v,
-          on_keydown: function(e, count, duplicate) {
-            if (!duplicate) {
-              return vm.keyDown(e);
-            }
-          },
-          on_keyup: function(e) {
-            return vm.keyUp(e);
-          }
+          on_keydown: vm.keyDown,
+          on_keyup: vm.keyUp
         });
       });
       keypressHelper.listener.register_many(combos);
@@ -298,12 +296,48 @@
         value: '1312131'
       },
       {
+        name: 'Diminished',
+        value: '21212121'
+      },
+      {
+        name: 'Dorian',
+        value: '2122212'
+      },
+      {
         name: 'Egyptian',
         value: '23232'
       },
       {
+        name: 'Ethiopian (A raray)',
+        value: '2212221'
+      },
+      {
+        name: 'Ethiopian (Geez & Ezel)',
+        value: '2122122'
+      },
+      {
         name: 'Harmonic Minor',
         value: '21222131',
+      },
+      {
+        name: 'Hawaiian',
+        value: '2122221'
+      },
+      {
+        name: 'Hindustan',
+        value: '2212122'
+      },
+      {
+        name: 'Hungarian Major',
+        value: '3121212'
+      },
+      {
+        name: 'Hungarian Gypsy',
+        value: '2131131'
+      },
+      {
+        name: 'Hungarian Gypsy Persian',
+        value: '1312131'
       },
       {
         name: 'Major',
@@ -324,6 +358,10 @@
       {
         name: 'Chinese',
         value: '42141'
+      },
+      {
+        name: 'Chinese Mongolian',
+        value: '22323'
       },
       {
         name: 'Japanese A',
@@ -808,14 +846,16 @@
     return directive;
 
     function TnTouchEndController($scope, $element) {
-      $element.bind('touchend', onTouchEnd);
+      var vm = this;
 
-      function onTouchEnd(event) {
+      vm._onTouchEnd = function(event) {
         event.preventDefault();
         var method = $element.attr('tn-touchend');
         $scope.$event = event;
         $scope.$apply(method);
-      }
+      };
+
+      $element.bind('touchend', vm._onTouchEnd);
     }
   }
 })();
@@ -837,14 +877,16 @@
     return directive;
 
     function TnTouchMoveController($scope, $element) {
-      $element.bind("touchmove", onTouchMove);
+      var vm = this;
 
-      function onTouchMove(event) {
+      vm._onTouchMove = function(event) {
         event.preventDefault();
         var method = $element.attr("tn-touchmove");
         $scope.$event = event;
         $scope.$apply(method);
-      }
+      };
+
+      $element.bind("touchmove", vm._onTouchMove);
     }
   }
 })();
@@ -866,14 +908,16 @@
     return directive;
 
     function TnTouchStartController($scope, $element) {
-      $element.bind('touchstart', onTouchStart);
+      var vm = this;
 
-      function onTouchStart(event) {
+      vm._onTouchStart = function(event) {
         event.preventDefault();
         var method = $element.attr('tn-touchstart');
         $scope.$event = event;
         $scope.$apply(method);
-      }
+      };
+
+      $element.bind('touchstart', vm._onTouchStart);
     }
   }
 })();
@@ -1085,7 +1129,7 @@
   }
 })();
 
-angular.module("transpositron").run(["$templateCache", function($templateCache) {$templateCache.put("app/home/home.html","<section class=\"jumbotron\"><h1>Transpositron</h1><p class=\"lead\">Transpose your keyboard and easily play any scale.</p></section><tn-keyboard flex=\"\" notes-playing=\"home.notesPlaying\" scale=\"home.scale\" natural-key=\"home.baseKeyOffset\" base-octave=\"home.baseOctave\" base-key-offset=\"home.baseKeyOffset\" key-note-map=\"home.keyNoteMap\" key-sequence=\"home.keySequence\" use-scale=\"home.useScale\" play-note=\"home.noteOn\" stop-note=\"home.noteOff\" show-keys=\"home.showKeys\"></tn-keyboard><div flex=\"\" layout-gt-sm=\"row\" layout-sm=\"column\" layout-align=\"center\"><div flex=\"33\" flex-sm=\"100\"><md-card><md-card-content><h3>Scale settings</h3><div layout=\"row\"><md-checkbox ng-model=\"home.useScale\" ng-change=\"home.mapKeysToNotes()\" aria-label=\"Enable scale\">Enable scale</md-checkbox></div><div layout=\"row\"><md-input-container flex=\"30\" layout=\"\"><label>Base Octave</label> <input class=\"flex-input\" type=\"number\" ng-model=\"home.baseOctave\" aria-label=\"octave\" aria-controls=\"octave-slider\"></md-input-container><div flex=\"\" layout=\"\" layout-margin=\"\" layout-align=\"center center\"><md-slider flex=\"\" ng-model=\"home.baseOctave\" min=\"0\" max=\"6\" step=\"1\" aria-label=\"octave\" id=\"octave-slider\" ng-change=\"home.mapKeysToNotes()\"></md-slider></div></div><md-input-container><label>Scale</label><md-select ng-model=\"home.scale\" ng-change=\"home.mapKeysToNotes()\" aria-label=\"Scale\" placeholder=\"Scale\"><md-option ng-repeat=\"s in home.scales\" value=\"{{s.value}}\">{{s.name}}</md-option></md-select></md-input-container><md-input-container><label>Key</label><md-select ng-model=\"home.baseKeyOffset\" ng-change=\"home.mapKeysToNotes()\" aria-label=\"Key\" placeholder=\"Key\"><md-option ng-repeat=\"k in home.naturalKeys\" value=\"{{k.value}}\">{{k.name}}</md-option></md-select></md-input-container><div layout=\"row\"><md-input-container flex=\"60\"><label>Custom scale</label> <input class=\"flex-input\" type=\"text\" ng-model=\"home.scale\" aria-label=\"Custom scale\"></md-input-container><md-button flex=\"\" class=\"md-raised\" ng-click=\"home.mapKeysToNotes()\">Set</md-button></div></md-card-content></md-card></div><div flex=\"33\" flex-sm=\"100\"><md-card flex=\"33\" flex-sm=\"100\"><md-card-content><h3>Envelope</h3><div layout=\"\"><md-input-container flex=\"30\" layout=\"\"><label>Attack</label> <input class=\"flex-input\" type=\"number\" ng-model=\"home.ap.envelopeDefs.a\" aria-label=\"attack\" aria-controls=\"attack-slider\"></md-input-container><div flex=\"\" layout=\"\" layout-align=\"center center\"><md-slider flex=\"\" ng-model=\"home.ap.envelopeDefs.a\" min=\"0\" max=\"2\" step=\"0.01\" aria-label=\"attack\" id=\"attack-slider\"></md-slider></div></div><div layout=\"\"><md-input-container flex=\"30\" layout=\"\"><label>Decay</label> <input class=\"flex-input\" type=\"number\" ng-model=\"home.ap.envelopeDefs.d\" aria-label=\"decay\" aria-controls=\"decay-slider\"></md-input-container><div flex=\"\" layout=\"\" layout-align=\"center center\"><md-slider flex=\"\" ng-model=\"home.ap.envelopeDefs.d\" min=\"0\" max=\"2\" step=\"0.01\" aria-label=\"decay\" id=\"decay-slider\"></md-slider></div></div><div layout=\"\"><md-input-container flex=\"30\" layout=\"\"><label>Sustain</label> <input class=\"flex-input\" type=\"number\" ng-model=\"home.ap.envelopeDefs.s\" aria-label=\"sustain\" aria-controls=\"sustain-slider\"></md-input-container><div flex=\"\" layout=\"\" layout-align=\"center center\"><md-slider flex=\"\" ng-model=\"home.ap.envelopeDefs.s\" min=\"0\" max=\"1\" step=\"0.01\" aria-label=\"sustain\" id=\"sustain-slider\"></md-slider></div></div><div layout=\"\"><md-input-container flex=\"30\" layout=\"\"><label>Release</label> <input class=\"flex-input\" type=\"number\" ng-model=\"home.ap.envelopeDefs.r\" aria-label=\"release\" aria-controls=\"release-slider\"></md-input-container><div flex=\"\" layout=\"\" layout-align=\"center center\"><md-slider flex=\"\" ng-model=\"home.ap.envelopeDefs.r\" min=\"0\" max=\"2\" step=\"0.01\" aria-label=\"release\" id=\"release-slider\"></md-slider></div></div></md-card-content></md-card></div><div flex=\"33\" flex-sm=\"100\"><md-card><md-card-content><h3>Wavetable instrument</h3><md-input-container><label>Instrument</label><md-select ng-model=\"home.waveform\" aria-label=\"wavetable instrument\" placeholder=\"wavetable\" ng-change=\"home.setWaveform()\"><md-option ng-repeat=\"wave in home.waveforms\" value=\"{{wave}}\">{{wave}}</md-option></md-select></md-input-container></md-card-content></md-card></div></div>");
+angular.module("transpositron").run(["$templateCache", function($templateCache) {$templateCache.put("app/home/home.html","<section class=\"jumbotron\"><h1>Transpositron</h1><p class=\"lead\">Transpose your keyboard and easily play any scale. Now with touch support! By <a href=\"https://twitter.com/BenMurden\">Benjamin Murden</a> at <a href=\"https://www.musicisum.net\">Musicisum</a>.</p></section><tn-keyboard flex=\"\" notes-playing=\"home.notesPlaying\" scale=\"home.scale\" natural-key=\"home.baseKeyOffset\" base-octave=\"home.baseOctave\" base-key-offset=\"home.baseKeyOffset\" key-note-map=\"home.keyNoteMap\" key-sequence=\"home.keySequence\" use-scale=\"home.useScale\" play-note=\"home.noteOn\" stop-note=\"home.noteOff\" show-keys=\"home.showKeys\"></tn-keyboard><div flex=\"\" layout-gt-sm=\"row\" layout-sm=\"column\" layout-align=\"center\"><div flex=\"33\" flex-sm=\"100\"><md-card><md-card-content><h3>Scale settings</h3><div layout=\"row\"><md-checkbox ng-model=\"home.useScale\" ng-change=\"home.mapKeysToNotes()\" aria-label=\"Enable scale\">Enable scale</md-checkbox></div><div layout=\"row\"><md-input-container flex=\"30\" layout=\"\"><label>Base Octave</label> <input class=\"flex-input\" type=\"number\" ng-model=\"home.baseOctave\" aria-label=\"octave\" aria-controls=\"octave-slider\"></md-input-container><div flex=\"\" layout=\"\" layout-margin=\"\" layout-align=\"center center\"><md-slider flex=\"\" ng-model=\"home.baseOctave\" min=\"0\" max=\"6\" step=\"1\" aria-label=\"octave\" id=\"octave-slider\" ng-change=\"home.mapKeysToNotes()\"></md-slider></div></div><md-input-container><label>Scale</label><md-select ng-model=\"home.scale\" ng-change=\"home.mapKeysToNotes()\" aria-label=\"Scale\" placeholder=\"Scale\"><md-option ng-repeat=\"s in home.scales\" value=\"{{s.value}}\">{{s.name}}</md-option></md-select></md-input-container><md-input-container><label>Key</label><md-select ng-model=\"home.baseKeyOffset\" ng-change=\"home.mapKeysToNotes()\" aria-label=\"Key\" placeholder=\"Key\"><md-option ng-repeat=\"k in home.naturalKeys\" value=\"{{k.value}}\">{{k.name}}</md-option></md-select></md-input-container><div layout=\"row\"><md-input-container flex=\"60\"><label>Custom scale</label> <input class=\"flex-input\" type=\"text\" ng-model=\"home.scale\" aria-label=\"Custom scale\"></md-input-container><md-button flex=\"\" class=\"md-raised\" ng-click=\"home.mapKeysToNotes()\">Set</md-button></div></md-card-content></md-card></div><div flex=\"33\" flex-sm=\"100\"><md-card flex=\"33\" flex-sm=\"100\"><md-card-content><h3>Envelope</h3><div layout=\"\"><md-input-container flex=\"30\" layout=\"\"><label>Attack</label> <input class=\"flex-input\" type=\"number\" ng-model=\"home.ap.envelopeDefs.a\" aria-label=\"attack\" aria-controls=\"attack-slider\"></md-input-container><div flex=\"\" layout=\"\" layout-align=\"center center\"><md-slider flex=\"\" ng-model=\"home.ap.envelopeDefs.a\" min=\"0\" max=\"2\" step=\"0.01\" aria-label=\"attack\" id=\"attack-slider\"></md-slider></div></div><div layout=\"\"><md-input-container flex=\"30\" layout=\"\"><label>Decay</label> <input class=\"flex-input\" type=\"number\" ng-model=\"home.ap.envelopeDefs.d\" aria-label=\"decay\" aria-controls=\"decay-slider\"></md-input-container><div flex=\"\" layout=\"\" layout-align=\"center center\"><md-slider flex=\"\" ng-model=\"home.ap.envelopeDefs.d\" min=\"0\" max=\"2\" step=\"0.01\" aria-label=\"decay\" id=\"decay-slider\"></md-slider></div></div><div layout=\"\"><md-input-container flex=\"30\" layout=\"\"><label>Sustain</label> <input class=\"flex-input\" type=\"number\" ng-model=\"home.ap.envelopeDefs.s\" aria-label=\"sustain\" aria-controls=\"sustain-slider\"></md-input-container><div flex=\"\" layout=\"\" layout-align=\"center center\"><md-slider flex=\"\" ng-model=\"home.ap.envelopeDefs.s\" min=\"0\" max=\"1\" step=\"0.01\" aria-label=\"sustain\" id=\"sustain-slider\"></md-slider></div></div><div layout=\"\"><md-input-container flex=\"30\" layout=\"\"><label>Release</label> <input class=\"flex-input\" type=\"number\" ng-model=\"home.ap.envelopeDefs.r\" aria-label=\"release\" aria-controls=\"release-slider\"></md-input-container><div flex=\"\" layout=\"\" layout-align=\"center center\"><md-slider flex=\"\" ng-model=\"home.ap.envelopeDefs.r\" min=\"0\" max=\"2\" step=\"0.01\" aria-label=\"release\" id=\"release-slider\"></md-slider></div></div></md-card-content></md-card></div><div flex=\"33\" flex-sm=\"100\"><md-card><md-card-content><h3>Wavetable instrument</h3><md-input-container><label>Instrument</label><md-select ng-model=\"home.waveform\" aria-label=\"wavetable instrument\" placeholder=\"wavetable\" ng-change=\"home.setWaveform()\"><md-option ng-repeat=\"wave in home.waveforms\" value=\"{{wave}}\">{{wave}}</md-option></md-select></md-input-container></md-card-content></md-card></div></div>");
 $templateCache.put("app/components/navbar/navbar.html","<md-toolbar layout=\"row\" layout-align=\"center center\"><md-button hide=\"\" show-gt-xs=\"\" href=\"/\">Transpositron</md-button><section flex=\"\" layout=\"row\" layout-align=\"left center\"><md-button href=\"/\" class=\"md-raised\">Home</md-button><md-button href=\"about/\" class=\"md-raised\">About</md-button></section></md-toolbar>");
 $templateCache.put("app/components/tn-keyboard/tn-keyboard.html","<div flex=\"\" layout=\"row\" tn-touchmove=\"vm.touchmove($event)\"><div flex=\"\" ng-repeat=\"key in vm.keyboardNotes\" class=\"piano-key\" ng-class=\"{\'black-key\': key.type, hide: $index >= 12, \'show-gt-xs\': $index >= 12 && $index < 24, \'show-gt-md\': $index >= 24, \'note-down\': vm.isBeingPlayed(key.label), \'disabled\': !key.active}\"><div id=\"{{key.label}}\" class=\"inner\" ng-mousedown=\"vm.noteDown(key.label)\" ng-mouseup=\"vm.noteUp(key.label)\" ng-mouseleave=\"vm.noteUp(key.label)\" ng-mouseover=\"vm.mouseOver($event, key.label)\" tn-touchstart=\"vm.touchStart($event)\" tn-touchend=\"vm.touchEnd($event)\"><div class=\"key-label\" data-touch-bubble=\"\" ng-class=\"{visible: !!vm.showKeys}\">{{key.keyLabel}}</div><div data-touch-bubble=\"\">{{key.label}}</div></div></div></div>");
 $templateCache.put("app/about/about.html","<section class=\"jumbotron\"><h1>Transpositron</h1><p>A Web Audio API project by <a href=\"https://github.com/benmurden\">Benjamin Murden</a></p></section><div flex=\"\" layout=\"row\" layout-align=\"center\"><div class=\"about-text\"><p>Using Angular.js, Material Design, and of course, Web Audio API.</p></div></div><div flex=\"\" layout-gt-sm=\"row\" layout=\"column\" layout-wrap=\"\" layout-align=\"center\" class=\"techs\"><md-card flex=\"30\" flex-sm=\"100\" ng-repeat=\"tech in about.techs | orderBy:\'rank\'\"><div class=\"thumbnail\"><img ng-src=\"assets/images/{{ tech.logo }}\" alt=\"{{ tech.title }}\" class=\"pull-right\"><div class=\"caption\"><h3>{{ tech.title }}</h3><p>{{ tech.description }}</p><p><a ng-href=\"{{ tech.url }}\">{{ tech.url }}</a></p></div></div></md-card></div>");}]);
