@@ -38,7 +38,13 @@ function browserSyncInit(baseDir, browser) {
   browserSync.instance = browserSync.init({
     startPath: '/',
     server: server,
-    browser: browser
+    browser: browser,
+    middleware: [
+      require('connect-modrewrite')([
+      // Single-page-apps: Return index.html for unknown paths.
+      '/Transpositron/ / [L]'
+      ])
+    ]
   });
 }
 
