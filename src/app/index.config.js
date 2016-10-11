@@ -21,12 +21,15 @@
       .accentPalette('deep-orange')
       .dark();
 
+    var homeRoute = {
+      templateUrl: 'app/home/home.html',
+      controller: 'HomeController',
+      controllerAs: 'home'
+    }
+
     $routeProvider
-      .when('/', {
-        templateUrl: 'app/home/home.html',
-        controller: 'HomeController',
-        controllerAs: 'home'
-      })
+      .when('/', homeRoute)
+      .when('/home/', homeRoute)
       .when('/about/', {
         templateUrl: 'app/about/about.html',
         controller: 'AboutController',
