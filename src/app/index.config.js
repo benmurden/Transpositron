@@ -25,7 +25,7 @@
       templateUrl: 'app/home/home.html',
       controller: 'HomeController',
       controllerAs: 'home'
-    }
+    };
 
     $routeProvider
       .when('/', homeRoute)
