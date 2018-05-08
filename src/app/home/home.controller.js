@@ -117,7 +117,7 @@
 
     vm.scales = [
       {
-        name: 'Aeolian',
+        name: 'Aeolian / Ethiopian (Geez & Ezel)',
         value: '2122122'
       },
       {
@@ -125,7 +125,7 @@
         value: '21211131'
       },
       {
-        name: 'Arabian A',
+        name: 'Arabian A / Diminished',
         value: '21212121'
       },
       {
@@ -145,12 +145,8 @@
         value: '321132'
       },
       {
-        name: 'Byzantine',
+        name: 'Byzantine / Hungarian Gypsy Persian',
         value: '1312131'
-      },
-      {
-        name: 'Diminished',
-        value: '21212121'
       },
       {
         name: 'Dorian',
@@ -159,14 +155,6 @@
       {
         name: 'Egyptian',
         value: '23232'
-      },
-      {
-        name: 'Ethiopian (A raray)',
-        value: '2212221'
-      },
-      {
-        name: 'Ethiopian (Geez & Ezel)',
-        value: '2122122'
       },
       {
         name: 'Harmonic Minor',
@@ -189,10 +177,6 @@
         value: '2131131'
       },
       {
-        name: 'Hungarian Gypsy Persian',
-        value: '1312131'
-      },
-      {
         name: 'Major',
         value: '2212221'
       },
@@ -205,16 +189,12 @@
         value: '1221222'
       },
       {
-        name: 'Major Pentatonic',
+        name: 'Major Pentatonic / Chinese Mongolian',
         value: '22323'
       },
       {
         name: 'Chinese',
         value: '42141'
-      },
-      {
-        name: 'Chinese Mongolian',
-        value: '22323'
       },
       {
         name: 'Japanese A',
