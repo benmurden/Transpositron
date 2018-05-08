@@ -36,7 +36,7 @@
       templateUrl: 'app/home/home.html',
       controller: 'HomeController',
       controllerAs: 'home'
-    }
+    };
 
     $routeProvider
       .when('/', homeRoute)
@@ -267,7 +267,7 @@
 
     vm.scales = [
       {
-        name: 'Aeolian',
+        name: 'Aeolian / Ethiopian (Geez & Ezel)',
         value: '2122122'
       },
       {
@@ -275,7 +275,7 @@
         value: '21211131'
       },
       {
-        name: 'Arabian A',
+        name: 'Arabian A / Diminished',
         value: '21212121'
       },
       {
@@ -295,12 +295,8 @@
         value: '321132'
       },
       {
-        name: 'Byzantine',
+        name: 'Byzantine / Hungarian Gypsy Persian',
         value: '1312131'
-      },
-      {
-        name: 'Diminished',
-        value: '21212121'
       },
       {
         name: 'Dorian',
@@ -309,14 +305,6 @@
       {
         name: 'Egyptian',
         value: '23232'
-      },
-      {
-        name: 'Ethiopian (A raray)',
-        value: '2212221'
-      },
-      {
-        name: 'Ethiopian (Geez & Ezel)',
-        value: '2122122'
       },
       {
         name: 'Harmonic Minor',
@@ -339,10 +327,6 @@
         value: '2131131'
       },
       {
-        name: 'Hungarian Gypsy Persian',
-        value: '1312131'
-      },
-      {
         name: 'Major',
         value: '2212221'
       },
@@ -355,16 +339,12 @@
         value: '1221222'
       },
       {
-        name: 'Major Pentatonic',
+        name: 'Major Pentatonic / Chinese Mongolian',
         value: '22323'
       },
       {
         name: 'Chinese',
         value: '42141'
-      },
-      {
-        name: 'Chinese Mongolian',
-        value: '22323'
       },
       {
         name: 'Japanese A',
@@ -637,39 +617,6 @@
       }
     }
 
-  }
-
-})();
-
-(function() {
-  'use strict';
-
-  angular
-    .module('transpositron')
-    .directive('acmeNavbar', acmeNavbar);
-
-  /** @ngInject */
-  function acmeNavbar() {
-    var directive = {
-      restrict: 'E',
-      templateUrl: 'app/components/navbar/navbar.html',
-      scope: true,
-      controller: NavbarController,
-      controllerAs: 'vm',
-      bindToController: {
-          creationDate: '='
-      }
-    };
-
-    return directive;
-
-    /** @ngInject */
-    function NavbarController(moment) {
-      var vm = this;
-
-      // "vm.creation" is avaible by directive option "bindToController: true"
-      vm.relativeDate = moment(vm.creationDate).fromNow();
-    }
   }
 
 })();
@@ -973,6 +920,39 @@
   'use strict';
 
   angular
+    .module('transpositron')
+    .directive('acmeNavbar', acmeNavbar);
+
+  /** @ngInject */
+  function acmeNavbar() {
+    var directive = {
+      restrict: 'E',
+      templateUrl: 'app/components/navbar/navbar.html',
+      scope: true,
+      controller: NavbarController,
+      controllerAs: 'vm',
+      bindToController: {
+          creationDate: '='
+      }
+    };
+
+    return directive;
+
+    /** @ngInject */
+    function NavbarController(moment) {
+      var vm = this;
+
+      // "vm.creation" is avaible by directive option "bindToController: true"
+      vm.relativeDate = moment(vm.creationDate).fromNow();
+    }
+  }
+
+})();
+
+(function() {
+  'use strict';
+
+  angular
       .module('transpositron')
       .service('webAudioPlayer', webAudioPlayer);
 
@@ -1058,6 +1038,8 @@
     };
 
     this.playNote = function(note, duration) {
+      audioContext.resume();
+      
       var oscObj = this.buildOscillatorObject(note);
       var time = audioContext.currentTime;
       var a = this.envelopeDefs.a;
@@ -1098,6 +1080,8 @@
     };
 
     this.startNote = function(note) {
+      audioContext.resume();
+
       if (!note || !!this._playing[note]) {
         return;
       }
