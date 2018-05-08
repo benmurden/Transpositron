@@ -87,6 +87,8 @@
     };
 
     this.playNote = function(note, duration) {
+      audioContext.resume();
+      
       var oscObj = this.buildOscillatorObject(note);
       var time = audioContext.currentTime;
       var a = this.envelopeDefs.a;
@@ -127,6 +129,8 @@
     };
 
     this.startNote = function(note) {
+      audioContext.resume();
+
       if (!note || !!this._playing[note]) {
         return;
       }
